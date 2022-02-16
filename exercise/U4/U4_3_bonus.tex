@@ -1,0 +1,119 @@
+\documentclass{article}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{extarrows}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 4}
+\author{Xiheng He }
+\date{Mai 2021}
+\linespread{1.5}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{3. Aufgabe (10 Punkte, Notenbonus):}\\
+a) Sei SuperComputer ein leistungsfähiger Rechner, der in einer Sekunde 1.000 Elementaroperationen ausführen kann. 
+Für ein bestimmtes Problem seien fünf verschiedene Algorithmen verfügbar. Hierbei benötigt der $i$-te Algorithmus 
+bei einer Eingabe der Eingabegröße $n$ genau $T_i(n)$ Elementaroperationen, wobei
+\begin{align*}
+T_1(n) = 500 \cdot n,\ T_2(n) = 50 \cdot n\log_2(n),\ T_3(n) = n^2,\ T_4(n) = \frac{n^3}{100},\ T_5(n) = \frac{3^n}{1000}
+\end{align*}
+ist. Vervollständigen Sie die folgende Tabelle, in der die Eingabegrößen angegeben sind, für die
+der $i$-te Algorithmus auf dem SuperComputer (ziemlich) genau eine Sekunde, eine Minute, eine
+Stunde, einen Tag, einen Monat bzw. ein Jahr Rechenzeit benötigt. Lösungsweg mit angeben!
+\newline
+\bm{$T_1(n)$}: 
+\newline
+60s: $T_1(n) = 500 \cdot n = 1000 \cdot 60 \Longrightarrow n = 120$; 
+3600s: $T_1(n) = 500 \cdot n = 1000 \cdot 3600 \Longrightarrow n = 7200$;
+1d = 86400s: $T_1(n) = 500 \cdot n = 1000 \cdot 3600 \cdot 24 \Longrightarrow n = 172800$;
+1M = 2592000s: $T_1(n) = 500 \cdot n = 1000 \cdot 3600 \cdot 24 \cdot 30 \Longrightarrow n = 5184000$;
+1Y = 31536000s: $T_1(n) = 500 \cdot n = 1000 \cdot 31536000 \Longrightarrow n = 63072000$
+\newline
+\bm{$T_2(n)$}: 
+\newline
+1s: $T_2(n) = 50 \cdot n\log_2(n) = 1000 \Longrightarrow 2^{20} = n^n \Longrightarrow n \approx 7$;
+60s: $T_2(n) = 50 \cdot n\log_2(n) = 1000 \cdot 60 \Longrightarrow n \approx 163$;
+1d = 86400s: $T_2(n) = 50 \cdot n\log_2(n) = 1000 \cdot 86400 \Longrightarrow n \approx 103708$;
+\newline
+1M = 2592000s: $T_2(n) = 50 \cdot n\log_2(n) = 1000 \cdot 2592000 \Longrightarrow n \approx 2442956$;
+\newline
+1Y = 31536000s: $T_2(n) = 50 \cdot n\log_2(n) = 1000 \cdot 31536000 \Longrightarrow n^n = \exp (20 \cdot 31536000 )
+\Longrightarrow n \approx 25627375$
+\newline
+\bm{$T_3(n)$}:
+\newline
+1s: $T_3(n) = n^2 = 1000 \Longrightarrow n = \sqrt{1000} = 31.622 \approx 32$
+\newline
+60s: $T_3(n) = n^2 = 1000 \cdot 60 \Longrightarrow n = \sqrt{60000} \approx 245$
+\newline
+3600s: $T_3(n) = n^2 = 1000 \cdot 3600 \Longrightarrow n = \sqrt{1000 \cdot 3600} \approx 1897$
+\newline
+1d = 86400s: $T_3(n) = n^2 = 1000 \cdot 86400 \Longrightarrow n = \sqrt{86400000} \approx 9295$
+\newline
+1M = 2592000s: $T_3(n) = n^2 = 1000 \cdot 2592000 \Longrightarrow n = \sqrt{1000 \cdot 2592000} \approx 50912$
+\newline
+1Y = 31536000s: $T_3(n) = n^2 = 1000 \cdot 31536000 \Longrightarrow n = \sqrt{1000 \cdot 31536000} \approx 117584$ 
+\newline
+\bm{$T_4(n)$}:
+\newline
+1s: $T_4(n) = \frac{n^3}{100} = 1000 \Longrightarrow n = \sqrt[3]{10^5} \approx 46$
+\newline
+60s: $T_4(n) = \frac{n^3}{100} = 1000 \cdot 60 \Longrightarrow n = \sqrt[3]{10^5 \cdot 60} \approx 182$
+\newline
+3600s: $T_4(n) = \frac{n^3}{100} = 1000 \cdot 3600 \Longrightarrow n = \sqrt[3]{10^5 \cdot 3600} \approx 711$
+\newline
+1d = 86400s: $T_4(n) = \frac{n^3}{100} = 1000 \cdot 86400 \Longrightarrow n = \sqrt[3]{10^5 \cdot 86400} \approx 2052$
+\newline
+1M = 2592000s: $T_4(n) = \frac{n^3}{100} = 1000 \cdot 2592000 \Longrightarrow n = \sqrt[3]{10^5 \cdot 2592000} \approx 6376$
+\newline
+1Y = 31536000s: $T_4(n) = \frac{n^3}{100} = 1000 \cdot 31536000 \Longrightarrow n = \sqrt[3]{10^5 \cdot 31536000} \approx 14665$
+\newline
+\bm{$T_5(n)$}:
+\newline
+1s: $T_5(n) = \frac{3^n}{1000} = 1000 \Longrightarrow n = \log_3(10^6) \approx 13$
+\newline
+3600s: $T_5(n) = \frac{3^n}{1000} = 1000 \cdot 3600 \Longrightarrow n = \log_3(10^6 \cdot 3600) \approx 20$
+\newline
+1d = 86400s: $T_5(n) = \frac{3^n}{1000} = 1000 \cdot 86400 \Longrightarrow n = \log_3(10^6 \cdot 86400) \approx 23$
+\newline
+1M = 2592000s: $T_5(n) = \frac{3^n}{1000} = 1000 \cdot 2592000 \Longrightarrow n = \log_3(10^6 \cdot 2592000) \approx 26$
+\newline
+1Y = 31536000s: $T_5(n) = \frac{3^n}{1000} = 1000 \cdot 31536000 \Longrightarrow n = \log_3(10^6 \cdot 31536000) \approx 28$
+\newline\\
+\begin{tabular}{||l|c|c|c|c|c|c||}
+\hline & 1s & 1m = 60s & 1h = 3.600s & 1d = 86.400s & 2.592.000s & 1Y = 31.536.000s \\
+\hline $T_1(n)$ & 2 & 120 & 7200 & 172800 & 5184000 & 63072000 \\
+\hline $T_2(n)$ & 7 & 163 & 5763 & 103708 & 2442956 & 25627375 \\
+\hline $T_3(n)$ & 32 & 245 & 1897 & 9295 & 50912 & 117584 \\
+\hline $T_4(n)$ & 46 & 182 & 711 & 2052 & 6376 & 14665 \\
+\hline $T_5(n)$ & 13 & 16 & 20 & 23 & 26 & 28 \\
+\hline
+\end{tabular}
+\newline\\
+b) Sie haben sich einen HyperComputer zugelegt, der eine Weiterentwicklung von SuperComputer und 100 mal schneller 
+ist, also 100.000 Elementaroperationen pro Sekunde ausführen kann. Um wieviel kann man die Eingabegröße für die fünf 
+verschiedenen Algorithmen gegenüber SuperComputer erhöhen, wenn man dieselbe Rechenzeit zur Verfügung hat? 
+Diese Veränderung ist (möglichst genau) als Funktion der Eingabegröße (beispielsweise als Faktor oder ähnliches) 
+anzugeben, wobei das für $T_2$ nicht genau möglich ist.
+\newline
+Hinweis: Es ist \textbf{nicht} noch einmal eine Tabelle wie bei Aufgabe 3 anzugeben. Der Lösungsweg muss
+nachvollziehbar sein.
+\newline
+\bm{$T_i(n)$}: SuperComputer \qquad \bm{$T_i(n)'$}: HyperComputer
+\begin{align*}
+    \bm{T_1(n)} &= 500 \cdot n = 10^3 \land T_1(n)' = (500 \cdot n) \cdot 100 = 10^3 \cdot 100 \Longrightarrow T_1(n)' = 100 \cdot T_1(n) \\
+    \bm{T_2(n)} &= 50 \cdot n\log_2(n) = 10^3 \Longrightarrow n^n = \exp(20) \Longrightarrow n \approx 7 \land T_2(n)' = 50 \cdot n'\log_2(n') \\
+    &= 10^3 \cdot 100 \Longrightarrow n'^{n'} = \exp(20 \cdot 100) \Longrightarrow n' \approx 251 \Longrightarrow 
+    T_2(n)' = 35.857 \cdot T_2(n) \approx 36 \cdot T_2(n) \\
+    \bm{T_3(n)} &= n^2 = 1000 \Longrightarrow n = 10 \sqrt{10} \land T_3(n)' = n'^2 = 1000 \cdot 100 \Longrightarrow n' = 10^2 \sqrt{10} 
+    \Longrightarrow T_3(n)' = 10 \cdot T_2(n) \\
+    \bm{T_4(n)} &= \frac{n^3}{100} = 1000 \Longrightarrow n^3 = 10^5 \land T_4(n)' = \frac{n'^3}{100} \Longrightarrow n'^3 = 10^7 
+    \Longrightarrow \frac{n'}{n} = \sqrt[3]{100} = 4.6416 \Longrightarrow T_4(n)' \\
+    & \approx 4.64 \cdot T_4(n) \\
+    \bm{T_5(n)} &= \frac{3^n}{1000} = 1000 \Longrightarrow n = \log_3 10^6 \land T_5(n)' = \frac{3^{n'}}{1000} = 1000 \cdot 100 \Longrightarrow n' = \log_3 10^8
+    \Longrightarrow \frac{n'}{n} = \frac{\log_3 10^8}{\log_3 10^6} = \frac{4}{3} \\
+    & \Longrightarrow T_5(n)' = \frac{4}{3} \cdot T_5(n) \approx 1.33 \cdot T_5(n)
+\end{align*}
+\end{flushleft}
+\end{document}

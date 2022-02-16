@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage[lined,ruled]{algorithm2e}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 4}
+\author{Xiheng He }
+\date{April 2021}
+\linespread{1.5}
+\SetKwFor{For}{for (}{)\text{ do}}{}
+\SetKw{int}{int}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{1. Aufgabe (10 Punkte):}
+\renewcommand\footnoterule{}
+\begin{algorithm}
+    \NoCaptionOfAlgo
+    \caption{SumExist(int[] S, int x, int n)}
+    \Begin{
+    \SetAlgoVlined
+    \int $l = 0$\;
+    \int $r = n - 1$\;
+    \tcc{If $x = sum$ loop ends, $l$ must be smaller than $r$} 
+    \While{$(l \leq r)$}{
+        \If{$(S[l] + S[r] == x)$}{
+            \Return{\textbf{true}\;}
+            }
+        \tcc{if $x < sum$, reduce the sum until equal to $x$} 
+        \ElseIf{$(S[l] + S[r] > x)$}
+        {$r--$\;}
+        \tcc{if $x > sum$, increase the sum until equal to $x$} 
+        \Else{$l++$\;}
+        \Return{\textbf{false}\;}
+    }
+    }
+\end{algorithm}\\
+\textbf{Analyse:} \\
+Eingabegröße: $n = |S|$ \\
+Laufzeit: Vergleich benötigt genau ein mal Pro Rekursion und nach Vergleich wird entweder $l$ um 1 erhöht oder $r$ um 1 reduziert. 
+Egal wie l oder r sich verändert, die Kosten der arithmetischen Operationen beträgt jeweils $l$ und $n-1-r$.
+Damit ist die gesamte Kosten $l+n-1-r$ wobei $l-r \leq 0$ und While-Schleife kann maximal $n$ mal durchlaufen. 
+Somit ist die Laufzeit $O(n)$.
+\newline
+Korrektheit: Der Algorithmus wird am Anfang mit dem Summe der ersten und letzten beiden Elementen und $x$ vergleichen.
+Dazu gibt es drei Fälle: Wenn $x = S[0] + S[n-1]$ wird $true$ zurückgegeben; Wenn $x > S[0] + S[n-1]$ bedeutet es dass 
+die Summe erhöht werden muss, dann wird ein Element großer als das kleineste Element $S[0]$ benötigt. Anderfalls wird ein kleinere Element $<S[n-1]$ benötigt.
+Ist ein großer Element oder große Summe nötig, muss das nach rechts gesucht werden, sonst nach links. Damit wird $l$ steigen und $r$ verringert bis $l=r$.
+Jedes Mal wenn sich der Pointer $l$ oder $r$ bewegt checken wir ob $S[l] + S[r] == x$.
+Wenn solche zwei Elemente am Ende noch nicht gefunden wurden, dann gibt überhaupt nicht. 
+\end{flushleft}
+\end{document}

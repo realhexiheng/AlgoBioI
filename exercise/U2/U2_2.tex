@@ -1,0 +1,42 @@
+\documentclass{article}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 2}
+\author{Xiheng He }
+\date{April 2021}
+\linespread{2.1}
+\begin{document}
+\maketitle
+\begin{flushleft}
+    \textbf{2. Aufgabe (10 Punkte):}\\
+    Geben Sie eine möglichst einfache Abschätzung mit $\Theta$ an.
+    \newline\\
+    \text{a) $f(n) = n \cdot 3^k$}
+    \newline
+    Gegeben sei: $f = \Theta(g) \land a \in \mathbb{R} \Longrightarrow a \cdot f \in \Theta(g)$ \qquad
+    Deshalb: $n \in \Theta(n) \land 3^k \in \mathbb{R} \Longrightarrow f(n) = n \cdot 3^k \in \Theta(n)$
+    \newline\\
+    \text{b) $f(n) = \displaystyle\frac{n^3 - n^2 +5}{n^3 + 4n^2 - 3n}$}
+    \newline
+    $f(n) = \displaystyle\frac{n^3 - n^2 +5}{n^3 + 4n^2 - 3n} = \displaystyle\frac{1 - \frac{1}{n} + \frac{5}{n^3}}{1 + \frac{4}{n} - \frac{3}{n^2}}$ 
+    und $\displaystyle\lim_{n\to\infty} f(n) = 1$
+    \newline
+    Aus Rechenregeln 14 und 15 gilt:
+    \newline 
+    setze $g(n) = 1 \Longrightarrow \limsup_{n\to\infty}\frac{f(n)}{g(n)} = 1 \land \liminf_{n\to\infty}\frac{f(n)}{g(n)} = 1$
+    \newline
+    $f(n) = O(g) \land f(n) = \Omega(g) \Longrightarrow f(n) \in \Theta(1)$
+    \newline\\
+    \text{c) $f(n) = 4^{\log_2 (n)}$}
+    \newline
+    $f(n) = 4^{\log_2 (n)} = n^{\log_2 (4)} = n^2 \Longrightarrow f(n) = n^2 \in \Theta(n^2)$
+    \newline\\
+    \text{d) $f(n) = \displaystyle\sum_{i=0}^{n - 1}(n - i)^3$}
+    \newline
+    $f(n) = \displaystyle\sum_{i=0}^{n - 1}(n - i)^3 = \displaystyle\sum_{i=1}^{n}i^3 = \left(\frac{n(n + 1)}{2}\right)^2 = \frac{(n^2 + n)^2}{4}$
+    \newline
+    Aus Rechenregeln 3 sei $\frac{(n^2 + n)^2}{4}$ ein Polynom vom Grad 4, dann gilt $f(n) \in \Theta(n^4)$
+\end{flushleft}
+\end{document}

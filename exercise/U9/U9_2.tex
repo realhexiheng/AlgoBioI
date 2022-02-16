@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage[lined,ruled]{algorithm2e}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{forest}
+\usepackage{amsmath}
+\title{Übungen zur Algorithmischen Bioinformatik I
+Blatt 9}
+\author{Lisanne Friedrich }
+\date{Juni 2021}
+\SetKwFor{For}{for (}{)\text{ do}}{}
+\begin{document}
+\maketitle
+\textbf{2. Aufgabe (10 Punkte): Backtrack Vertex Cover}\\ \\
+\textbf{a) } \\
+Es müssen alle Potentiellen Teilmengen erzeugt werden. $\vert V\vert$ besitzt $2^n$ Teilmengen.Bei n Knoten und m Kanten sind für jede Teilmenge n*m Prüfschritte nötig.\\ \\
+ \textbf{b) }
+ \begin{algorithm}
+    \NoCaptionOfAlgo
+    \caption{BacktrackVC(G,k,uncov,opt))}
+    \Begin{
+    \SetAlgoVlined
+       \If{(k $<$ 0)}{
+       Ende vom Baum erreicht;
+       }
+       \If{(uncov $<$opt)}{
+       neues Minimum gefunden;
+       }
+       opt=uncov;\\
+       store configurations;\\
+       \If{(bound conditions == true)}{
+       return;
+       }
+       mark i as covered;\\
+       k=k-1;\\
+       dj =d(i)-1;\\                        
+        BacktrackVC(G,k,uncov,opt)\\
+        mark i as free;}
+\end{algorithm}\\
+\textbf{Laufzeitanalyse:}Da eine Breiten und Tiefe vorliegt ist die Worst-Case-Laufzeit $2^n$ und liegt damit in $\mathcal{O}(2^n)$, wobei $2^n $alle kanten im Rekursionsbaum beschreibt.\\
+\textbf{Korrektheitsanalyse: } Der Algorithmus geht die gesamte Tiefe ab und überprüft dabei alle Kanten, ob sie schon durch einen Knoten markiert sind. Danach geht er in die nächst tiefere Ebene. Somit wird keine Kante übersehen.\\ \\
+\textbf{c)  }\\
+Da der Algorithmus immer weiter in tiefere Ebnen absteigt kann er bei einer gefundenen Teillösung nicht verbessert werden.
+\end{document} 

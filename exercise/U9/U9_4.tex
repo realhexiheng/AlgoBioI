@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage[a4paper,left=15mm,right=15mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{extarrows}
+\usepackage{enumerate}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 9}
+\author{Xiheng He }
+\date{Juni 2021}
+\linespread{2.0}
+\newtheorem{theorem}{Theorem}[section]
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{4. Aufgabe: Maximal Knapsack-Problem (MAX-KS) (10 Punkte)}
+\begin{enumerate}[(a)]
+    \item Optimal MAX-KS
+    \begin{itemize}
+        \item Implementieren Sie ein Verfahren zur optimalen Lösung des MAX-KS Problems mittels des
+        pseudo-polynomialen Algorithmus aus der Vorlesung.
+        \newline
+        Knapsack.jar -mode PPTAS
+        \item Erklären Sie wieso der Algorithmus korrekt ist und analysieren Sie die Laufzeit Ihrer Implementierung.
+        \newline Der Algorithmus wurde nach pseudocode aus der Vorlesung implementiert. Angenommen dass wir eine Teilmenge
+        $S_{i,p}$ mit Profit $p$ von ${a_1,\dots,a_i}$ haben deren Größe minimal ist. Anschließend müssen wir entscheiden,
+        ob der näshcte Artikel zusammengepackt werden solltet. Daher müssem wir betrachten, dass wir nur packen, wenn
+        die Größe der Teilmenge $S_{i,p} \cup a_{i + 1}$ immer minimal ist, sonst wird dieser Artikel nicht gepackt.
+        Da der Algorithmus in ein Feld ${1,\dots,nP}$ läuft, wird alle möglichkeit für gesamte Profit betrachtet, damit müssen
+        wir nur die Größe der Teilmenge minimalisieren. Der Profit ist somit \textbf{max$\{p|A(n,p) \leq B\}$}, wobei $A(n,p)$
+        die Größe der Teilmenge und $B$ ist die maximale Kapazität. 
+        \newline
+        Die Laufzeit ist $O(n^2 P)$, da der Algorithmus für insgesamt $n$ mal $a_i$ ${1,\dots nP}$ durchlaufen muss. 
+        \item Erklären Sie ”pseudo-polynomiell” Wieso ist Ihre Implementierung pseudo-polynomiell? Ist
+        Ihr Algorithmus in der Praxis anwendbar?
+        \newline
+        ”pseudo-polynomiell” bedeutet, dass die Laufzeit zwar als Polynom der Eingabegröße ausgedrückt werden kann,
+        jedoch wächst die Laufzeit exponentiell mit den Binärziffern der Eingabegröße, dann heißt die Laufzeit ”pseudo-polynomiell”.
+        Solche Problem mit ”pseudo-polynomiell” nennt man auch ``schwach NP-vollständig''.
+        \newline
+        Der Algorithmus ist anwendbar nur wenn die Eingabegröße relativ klein ist. Sonst hat der Algorithmus exponentielle 
+        Laufzeit was in der Praxis nicht praktisch ist.
+    \end{itemize}
+    \item FPTAS für MAX-KS
+    \begin{itemize}
+        \item Implementieren Sie zusätzlich die auf (a) basierende FPTAS-Variante.
+        \newline Knapsack.jar -mode FPTAS -r
+        \item Erklären Sie FPTAS (Fully Polynomial Time Approximation Scheme). Wieso ist Ihre Implementierung
+        ein FPTAS für MAX-KS? Ist Ihr FPTAS in der Praxis anwendbar?
+        \newline
+        FPTAS bedeutet, dass die Laufzeit der Algorithmus polynomiell in beider Eingabegröße $n$ und Performance Ratio $r$
+        ist damit läuft der Algorithmus in ``Fully Polynomial Time''.
+        \newline
+        Die Laufzeit der Algorithmus ist $(n^3 \cdot r/(r-1))$ und die Laufzeit ist völlständig polynomiell in $n$ und $r$.
+        Damit ist FPTAS.
+        \newline
+        FPTAS ist in der Praxis sehr praktisch. Jede FPTAS Approximation kann in polynomielle Laufzeit ausgegeben d.h.
+        egal wie groß die Eingabe ist, das Problem kann immer in polynomielle Laufzeit von FPTAS Approximation gelöst.
+        Leider besitzen nicht alle NP Probleme FPTAS Approximation. 
+    \end{itemize}
+\end{enumerate}
+\end{flushleft}
+\end{document}

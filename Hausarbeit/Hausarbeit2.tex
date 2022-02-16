@@ -1,0 +1,196 @@
+\documentclass{article}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{enumerate}
+\usepackage{extarrows}
+\usepackage{tikz}
+\usepackage{caption}  
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{trees,positioning,arrows}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Hausarbeit 2}
+\author{Xiheng He }
+\date{Mai 2021}
+\linespread{1.5}
+\begin{document}
+\maketitle
+\begin{flushleft}
+(a) \textbf{Komplexität}
+\newline
+\begin{enumerate}[(i)]
+\item Erklären Sie den Beweis der unteren Schranke fur Sortieralgorithmen mit Vergleichsoperationen!
+\newline
+Gegeben sei genau $n$ unterschiedliche Zahlen. In best-case wurden sie alle schon sortiert damit 
+wird dies nicht betrachtet. In worst-case sind alle nicht sortiert dann nehmen wir an, dass die Algorithmen 
+den richtige Ergebnis liefern nur dann wenn sie $x$ Schritte berechnet haben nämlich $2^x$ Vergleichsoperationen durchführen müssen,
+weil für jeden Schritt zwei Elemente verglichen werden deshalb es nur zwei mögliche Fälle für jeden Vergleich gibt. 
+\newline  
+Ferner sind theoritsch auch $n!$ Permutationen für solche Sotierprobleme vorhanden und Algorithmen benötigen höchstens 
+$2^x$ Vergleichsoperationen um die einzige richtige Permutation herauszufinden. Deshalb folgt:
+\begin{align*}
+    2^x \geq n! \Longrightarrow x &\geq \log(n!) \\
+    &= \log n + \log(n-1) + \log(n-2) + \dots + \log 2 \\
+    &= \sum_{i=2}^{n} \log i \\
+    &= \sum_{i=2}^{n/2 - 1} \log i + \sum_{i=n/2}^{n} \log i \\
+    & \geq 0 + \sum_{i=n/2}^{n} \log \frac{n}{2} \qquad \qquad \qquad
+    (\sum_{i=n/2}^{n} \log i \geq \sum_{i=n/2}^{n} \log \frac{n}{2}) \\
+    & \geq \frac{n}{2} \cdot \log \frac{n}{2} \\
+    &= \frac{n}{2} \cdot \frac{\log n}{\log 2} \\
+    &= \Theta(n\log n) \\
+    & \Longrightarrow x = \Omega(n\log n)
+\end{align*}
+Daraus können wir Schlussfolgerungen ziehen, dass die untere Schranke für Sortieralgorithmen $\Omega(n\log n)$ ist. 
+\item Wieso ist das Sortier-Problem ein ”closed problem”?
+\newline
+Wie es in (i) schon gezeigt haben Sortieralgorithmen einerseits eine inhärente Laufzeit-Komplexität (z.B. Mergesorts is $O(n\log n)$) 
+und andererseits eine untere Schranke $\Omega(n\log n)$. Deshalb ist Sortier-Problem ”closed problem”. 
+\newpage
+\item Es gibt lineare Algorithmen für das Sortier-Problem. Welche? Wieso? Welche zusätzlichen Annahmen 
+müssen dazu gemacht werden?
+\newline
+Lineare Algorithmen: Bucketsort,Countingsort, Radixsort
+\newline
+Weil solche lineare Sortieralgorithmen nicht total auf Vergleichssortierung basiert sind. Die Laufzeiten der Algorithmen 
+können zwar durch erhöhten Platzbedarf reduziert werden jedoch können diese Algorithmen nur unter bestimmen Umständen 
+linear laufen.
+\newline
+Annahme: für alle Sortieralgorithmen, die auf Vergleich und Austausch der Elemente basieren, bleiben die untere Schranke in $\Omega(n\log n)$.
+\item Was weiss man über das average-case Verhalten der jeweiligen Algorithmen? 
+\newline
+Durch Laufzeitanalyse in average-case können wir diese Algorithmus evaluieren. Im best-case erhalten wir die beste 
+Leistung dieses Algorithmus, die obere Schranke der Algorithmusleistung darstellt und im worst-case erhalten wir 
+die schlechteste Leistung dieses Algorithmus, der auch untere Schranke darstellt. Manche Algorithmen die ausgezeichnete Laufzeit 
+im best-case besitzen, funktionieren in tatsächlichen Gebrauch nicht immer ideal denn die Leistungen im worst-case 
+sind jedoch mittelmäßig. Wenn ein Algorithmus in average-case läuft ziemlich wie in best-case und worst-case können wir
+einen solchen Algorithmus als ``Stabil” evaluieren. Zusammengefasst, können wir durch average-case Verhalten
+die ``typische” Leistung des Algorithmus erhalten.
+\end{enumerate}
+(b) \textbf{Implementierung}
+\newline
+Implementieren Sie mehrere Sortieralgorithmen Ihrer Wahl inklusive (vielleicht von jeder
+Klasse eine?). Es gibt viele verfugbare Implementierungen, libraries bzw. tools für diese Algorithmen. 
+Es ist vielleicht instruktiv eigene mit Standard-Implementierungen zu vergleichen.
+\begin{enumerate}[(i)]
+\item (simple): z.B. INSERTION-SORT, \textbf{BUBBLE-SORT}, ...
+\item (rekursiv): z.B. \textbf{MERGE-SORT}, QUICK-SORT, ...
+\item (linear): z.B. COUNTING-SORT, \textbf{BUCKET-SORT}, RADIX-SORT, ...
+\end{enumerate}
+(c) \textbf{Benchmark}
+\newline
+Evaluieren und vergleichen Sie die Effizienz Ihrer Implementierungen (verwenden Sie geeignete
+timing Funktionen, achten Sie auf startup times z.B. der Java VM).
+\begin{enumerate}[(i)]
+    \item z.B. durch Timing auf unterschiedlich großen input Files.
+    \newline
+    Für große Eingabe ist \textbf{BUCKET-SORT} optimal, für kleine Eingabe sind \textbf{BUBBLE-SORT} und \textbf{BUCKET-SORT} 
+    optimal, da \textbf{MERGE-SORT} die Eingabe zuerst teilen muss. Für beliebige Eingabegröße läuft \textbf{MERGE-SORT} stabilste. 
+    \newline
+    \begin{tabular}{||l|c|c|c|c|c||}
+    \hline input size & $n = 10^2$ & $n = 10^3$ & $n = 10^4$ & $n = 10^5$ & $n = 10^6$ \\
+    \hline \textbf{BUBBLE-SORT} & 0ms & 11ms & 159ms & 12742ms & 1264231ms \\
+    \hline \textbf{MERGE-SORT} & 4ms & 1ms & 2ms & 23ms & 212ms \\
+    \hline \textbf{BUCKET-SORT} & 0ms & 0ms & 1ms & 2ms & 26ms \\
+    \hline
+    \end{tabular}
+    \item Wie passt das Timing zur theoretischen Laufzeitanalyse
+    \newline \\
+    BUBBLE-SORT: $\displaystyle\frac{1264231}{12742} = 99.2 \approx (\frac{10^6}{10^5})^2 = 100$ \\
+    MERGE-SORT: $\displaystyle\frac{23}{2} = 11.5 \approx \frac{10^5 \cdot \log 10^5}{10^4 \cdot \log 10^4} = 12.5$ \\
+    BUCKET-SORT: $\displaystyle\frac{26}{2} = 13 \approx \frac{10^6 + k_1}{10^5 + k_2}$ ($k_1 > k_2$) \\
+    Die tatsächliche Laufzeit ist unterschiedlich von der theroetische Laufzeit Komplexität jedoch ungefähr gleich.
+    \newpage  
+    \item Können die linearen Algorithmen die Effizienz deutlich verbessern? In welchen Fällen?
+    \newline
+    Die Laufzeit Komplexität des Bucketsort Algorithmus in worst-case liegt in $O(n^2)$ und in average-case liegt
+    in $O(n + k)$ wobei $k$ die Anzahl der Buckets entspricht. Deshalb kann dieser Algorithmus näturlich deutlich 
+    verbessert werden wenn es bestimmt wird, für welche Fälle sich zum Einsatz eignet. Bucketsort eignet sich 
+    hauptsächlich für gleichmäßig verteilte numerische Arrays. In diesem Fall kann eine maximale Effizienz erzielt werden.
+    \item Vergleichen Sie Ihre Implementierung mit dem bekannten Unix-tool sort!
+    \begin{itemize}
+        \item Unix kann alphabetisch und absteigend sortieren. Meine eigene Implementierung kann nur Nummern 
+        aufsteigend sortieren.
+        \item Unix kann im Vergleich zu meiner Implementierung auch Groß- und Kleinschreibung ignorieren 
+        und die Sortierergebnisse de-duplizieren.
+        \item Unix-Sort verwendet auch externen Speicherplatz, um die Effizienz der Sortierung zu optimieren.
+    \end{itemize}
+    \item Was können Sie über das Laufzeitverhalten von Unix sort schließen. Mit welchem Algorithmus könnte sort implementiert sein?
+    \newline
+    Unix sort benutz externen Speicherplatz für Optimierung der Effizienz und der Algorithmus muss 
+    unter allen Umständen stabil sein und immer eine optimale Effizienz anbieten. D.h, die Laufzeit muss in worst-case
+    und best-case (oder average-case) ungefähr gleich sein und er muss mindestens in $O(n\log n)$ da $O(n^2)$ nicht optimal 
+    und lineare Sortieralgorithmen nicht immer die beste Effizienz bieten.
+    Laufzeit in $O(n\log n)$ und der Algorithmus stabil, vermutlich wurde mit Merge-Sort implementiert.
+    \newline
+    (Im Verzeichnis coreutils kann man ein sort.c Datei finden. Eine der Funktionen heißt MAX\_MERGE.)
+    \item Wie vergleichen sich die Laufzeiten Ihrer Implementierungen mit Unix sort?
+    \newline
+    Wie in Java kann die Laufzeit durch Bash Skripten bestimmt werden.
+    z.B \\
+        start=\$(date +\%s) \\
+        sort -n \$file \\
+        end=\$(date +\%s) \\
+        take=\$(( end - start ))
+\end{enumerate}
+(d) \textbf{Bioinformatik-Anwendung}
+\newline
+Es gibt kaum ein Verfahren, dass so vielfältige Anwendungen in der Bioinformatik hat wie
+Sortieren. Oft werden Proteinsequenzen und -strukturen durchsucht und gescored und es
+mussen sortierte Listen der Ergebnisse ausgegeben oder weiterverarbeitet werden.
+\begin{enumerate}[(i)]
+    \item Unix sort kann dabei eine ganze Reihe von Aufgaben erledigen: Wozu könnte z.B. das
+    bekannte ”Unix-Pattern”: sort | uniq -c | sort -rn dienen? Diskutieren Sie Anwendungen und ähnlich nutzliche ”Pattern”.
+    sort hat viele Optionen, cut -f sowie head, tail und grep können auch sehr dienlich sein (von awk ganz zu schweigen).
+    \newline \\
+    sort: sortieren Datei \\
+    uniq -c: zeigen die Anzahl der Vorkommen der Zeile
+    sort -rn: sortieren absteigend nach Werte
+    Es dient dazu z.B, zeigen alle wiederholten Zeilen oder Pattern (z.B subsequence, motif) in der Datei und ordnen diese nach Anzahl der Vorkommen. 
+    \newline
+    z.B: ps -e -o ``\%C : \%p : \%z : \%a'' | sort –nr, das Pattern kann nach CPU-Auslastung absteigend sortieren.
+    \newpage
+    \item Wie passt das Timing von sort zur theoretischen Laufzeitanalyse?
+    \newline
+    Die Laufzeit von Unix Sort liegt nahe bei $O(n\log n)$, ungefähr gleich zur theoretischen Laufzeitanalyse.
+    \item Es wurden schon SAM/BAM Files erwähnt. Beschreiben Sie kurz was SAM/BAM files sind, was der Unterschied von 
+    SAM und BAM ist, und wozu sie dienen! Warum sollten/müssen die sortiert werden? 
+    \newline
+    Das SAM-Format (Sequence Alignment / Map) ist ein generisches Format zum Speichern großer Nukleotidsequenz-Alignments. 
+    Es besteht aus header section und alignment section. 
+    BAM ist das Binärformat von SAM, daher sind die beiden Formate identisch.
+    \begin{itemize}
+        \item SAM ist ein text-based Format und BAM ist das entsprechende Binärformat.
+        \item BAM-Dateien sind normalerweise komprimiert daher benötigt weniger Speicherplatt 
+        und für die Arbeit mit Software effizienter als SAM.
+    \end{itemize}
+    \item Es kann nicht schaden, sich etwas (Achtung: das kann umfangreich werden, das Format
+    ist recht komplex! Siehe https://samtools.github.io/hts-specs/SAMv1.pdf), also
+    etwas uber SAM/BAM-Files zu informieren. 
+    \newline
+    Fur Benchmarking arbeiten Sie mit .sam Files. Wie bekommen Sie .sam Files?
+    \newline
+    \begin{itemize}
+        \item Alignments können als .sam Files ausgegeben werden. z.B Mittels Alignment software bowtie2 
+        (bowtie2 -1 aln1.fasta -2 aln2.fasta -S exp.sam) kann .sam File erzeugt werden.
+        \item Wenn .bam File vorhanden ist, kann .sam File durch: samtools view exp.bam -O SAM > exp.sam
+        konvertiert werden.
+    \end{itemize}
+    \item Betrachten Sie hier (unkomprimierte) SAM-files (normalerweise speichert und arbeitet
+    man meist mit geeigneten Tools auf BAM files!) und nutzen Sie diese fur das Benchmarking Ihrer 
+    Implementierungen und den Vergleich mit Standardtools wie Unix sort und
+    \textbf{samtools}. Das Beispiel-File ist ungefähr 4GB groß und enthält ungefähr 16 Mio Zeilen.
+    Es kann je nachdem (Zahlen, Sequenzen, Zeilen) auf einem Laptop in 10s, 1:20m, 10m
+    sortiert werden (Achtung: hängt auch vom verfügbaren Hauptpeicher ab!). 
+    \begin{itemize}
+        \item \textbf{Unix sort} und \textbf{samtools} können alphabetisch sortieren.
+        \item \textbf{Unix sort} und \textbf{samtools} können z.B den Verbrauch des Internspeichers anpassen.
+        \item \textbf{Unix sort} und \textbf{samtools} können effizienter als merge-sort Standardimplementierung sortieren. 
+    \end{itemize}
+    \item Was können Sie über das Laufzeitverhalten von \textbf{samtools} sort schließen? Mit welchem
+    Algorithmus könnte \textbf{samtools} sort implementiert sein?
+    \newline
+    Die Laufzeit solltet für große Eingaben möglichst effizient sein. Daher solltet sie nicht in $O(n^k)$ oder $O(n+k)$ sein. 
+    \textbf{samtools sort} könnte als heap-based merge sort implementiert sein.
+\end{enumerate}
+\end{flushleft}
+\end{document}

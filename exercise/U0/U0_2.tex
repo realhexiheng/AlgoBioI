@@ -1,0 +1,30 @@
+\documentclass{article}
+\usepackage[lined,ruled]{algorithm2e}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amsmath}
+\title{Übungen zur Algorithmischen Bioinformatik I
+Blatt 0}
+\author{Xiheng He }
+\date{April 2021}
+\SetKwFor{For}{for (}{)\text{ do}}{}
+\begin{document}
+\maketitle
+\text{2. Aufgabe (5 Punkte):}
+\renewcommand\footnoterule{}
+\begin{algorithm}
+    \NoCaptionOfAlgo
+    \caption{MSS\_Naive (int[] a, int n)}
+    \Begin{
+    \SetAlgoVlined
+    $maxscore := 0 ; \qquad \ell := 1; \qquad r := 0$\tcc*{ always is maxscore = $\sigma(\ell,r)$}
+    \For{$i := 1; i \leq n; i\textbf{\rm\scriptsize++}$}{
+        \For{$j := i;j \leq n; j\textbf{\rm\scriptsize++}$}{
+            $s := 0$ \tcc*{ compute s = $\sigma(\ell,r)$}\par
+        \For{$k := i; k \leq j; k\textbf{\rm\scriptsize++}$}{$s := s + a[k];$}
+        \If{$s > maxscore$}{$maxscore := s; \qquad  \ell:= i; \qquad r := j;$}
+            }
+        }
+    }
+\end{algorithm}
+\footnoterule{\\Abbildung 1.4: Algorithmus: naiver Algorithmus für MSS}
+\end{document} 

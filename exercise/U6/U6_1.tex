@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage[lined,ruled]{algorithm2e}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{forest}
+\usepackage{amsmath}
+\title{Übungen zur Algorithmischen Bioinformatik I
+Blatt 6}
+\author{Lisanne Friedrich }
+\date{Mai 2021}
+\SetKwFor{For}{for (}{)\text{ do}}{}
+\begin{document}
+\maketitle
+\textbf{1. Aufgabe (10 Punkte): Türme von Hanoi}\\ \\
+Programmieren Sie sowohl eine rekursive als auch eine iterative Version der Türme von Hanoi. Das Programm muss die Anzahl n der verwendeten Scheiben, die Startposition und die Zielposition als Eingabeparameter akzeptieren. Nach dem Aufruf soll das Programm beide Algorithmen ausführen und die Züge ausgeben. Begründen Sie die Korrektheit der beiden Verfahren. Analysieren Sie das Laufzeitverhalten Ihrer Algorithmen und messen Sie die Laufzeit der Implementierungen jeweils in Abhängigkeit von der Anzahl n der verwendeten Scheiben\\ 
+Die Anzahl der Züge, die man zum lösen braucht lautet $2^n -1 $. \\\\
+ \textbf{iterative Version:}
+ \begin{algorithm}
+    \NoCaptionOfAlgo
+    \caption{iterativeTürme(S,H,Z, n))}
+    \Begin{
+    \SetAlgoVlined
+       \If{n mod 2 ==0}{
+       Richtung = "im"
+       }
+       \If{n mod 2 ==1}{
+       Richtung = "gegen den"
+       }
+       \While{höhe(Z) $\neq$ n}{
+       verschiebe Scheibe n Richtung Uhrezigersinn;\\
+       \If {Scheibe $\neq$ n verschiebbar}{
+       Verschiebe Scheibe $\neq$ n}
+       }
+    }
+\end{algorithm}\\
+Zum besseren Verständnis stellen wir uns hier die Stäbe im Kreis angeordnet vor.Die Startposition ist oben, dei Hilfsposition rechts und die Zielposition links.\\
+Wenn eine gerade Anzahl an Scheiben vorhanden ist, so wird die kleinste Scheibe im, ansonsten gegen den Uhrzeigersinn verschoben. Wenn eine Scheibe verschoben werden kann, bei der es sich nicht um die kleinste handelt so wird das getan. Danach wird die Schleife neu aufgerufen.\\
+Die Unterscheidung zwischen im und gegen den Uhrzeigersinn kann man weglassen, wenn das Ziel nur die Umlagerung auf einen Belibigen anderen Stab gewünscht ist.\\
+Die Korrektheitsanalyse ist nicht trivial, vgl. mit\\ http://gki.informatik.uni-freiburg.de/teaching/ws1011/infoI/infoI20-handout4.pdf den Folien 11 bis 27.\\
+
+\newpage
+ \textbf{rekursive Version:}
+\begin{algorithm}
+    \NoCaptionOfAlgo
+    \caption{rekursiveTürme(S,H,Z, n))}
+    \Begin{
+    \SetAlgoVlined
+      \If{($n>0$)}{
+      rekursiveTürme(S, Z, H, n-1);\\
+      bewege oberste Scheibe von S nach Z;\\
+      rekursiveTürme(H, S, Z, n-1)}\\
+    }
+\end{algorithm}\\
+Hier steht n für die Anzahl der Scheiben, S für die Startposition, H für die Hilfsposition und Z für die Zielposition.\\
+\textbf{Korrektheitsbeweis:} Der Algorithmus ist terminierend da irgendwann der Aufruf mit n = 1 erfolgt.
+Die Korrektheit kann mit einem Induktionsbeweis bewiesen werden.\\
+\textbf{Induktionsanfang:} n=1 $\Longrightarrow$ Scheibe wird direkt auf Zielposition gelegt.\\
+\textbf{Induktionsbehauptung:} Der Algorithmus funktioniert für n Scheiben mit $n>1$.\\
+\textbf{Induktionsbeweis:}\\ Der Algorithmus bewegt zunächst n Scheiben von
+der Startposition zum Arbeitsbereich (funktioniert nach
+Induktionsbehauptung),\\
+-bewegt dann die n+1-te Scheibe zur Hilfsposition (funktioniert nach Induktionsanfang)\\
+-bewegt schließlich die n Scheiben von
+der Hilfsposition zur Zielposition (funktioniert nach Induktionsbehauptung).\\
+
+
+
+\end{document} 

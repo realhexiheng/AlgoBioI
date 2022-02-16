@@ -1,0 +1,121 @@
+\documentclass{article}
+\usepackage[a4paper,left=15mm,right=15mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage[lined,ruled]{algorithm2e}
+\usepackage{extarrows}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{german}
+\usepackage{underoverlap}
+\usepackage{xcolor}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 11}
+\author{Xiheng He}
+\date{Juli 2021}
+\linespread{1.5}
+\newUOLdecorator\UOLfbox{{%
+    \fboxsep=1.2pt\fboxrule=.8pt%
+    \kern-\fboxrule \kern-\fboxsep%
+    {\color{red}
+    \fbox{\color{red}$#1$}}%
+    \kern-\fboxsep  \kern-\fboxrule%
+}}
+\newUOLdecorator\UOLfboxx{{%
+    \fboxsep=1.2pt\fboxrule=.5pt%
+    \kern-\fboxrule \kern-\fboxsep%
+    {\color{blue}
+    \fbox{\color{blue}$#1$}}%
+    \kern-\fboxsep  \kern-\fboxrule%
+}}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{1. Aufgabe: Z-Boxes and Z-Algorithm (10 Punkte)}
+\newline
+Fundamental preprocessing of a string computes so called \textbf{Z-boxes} and yields probably the simplest
+linear-time exact matching algorithm.
+\newline \\
+\textbf{Definition (Z-Box)}: Given a string $S$ and a position $i > 1$ in $S$. $Z_i(S)$ is the \textbf{length} of the longest
+substring in $S$ that starts at $i$ and matches a prefix of $S$.
+\begin{equation*}
+    Z_i(S) = max_k \{(i[S) [1 : k] = k]S \} = max_k \{S[i : i + k] = S[1 : k]\}
+\end{equation*}
+Given the following binary string $B = 010100101011$
+\begin{enumerate}[(a)]
+    \item For all $i$, compute the $Z_i(B)$ values.
+    \newline \\
+    \begin{tabular}{|c||c|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline i & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+        \hline z-box & - & 010 & - & 0 & 01010 & - & 0101 & - & 01 & - & - \\
+        \hline z-value & 0 & 3 & 0 & 1 & 5 & 0 & 4 & 0 & 2 & 0 & 0 \\
+        \hline
+    \end{tabular}
+    \item Draw all Z-boxes (i.e.$Z_i(B)$) > 0 for string $B$.
+    \newline
+    \emph{Hinweis}: Boxen mit blauer Farbe sind Z-boxen.
+    \begin{itemize}
+        \item $Z_2 = 3: \qquad \UOLfbox{0\;1\;}[0]\UOLfboxx{\;1\;0} \;0\;1\;0\;1\;0\;1\;1$
+        \item $Z_4 = 1: \qquad \UOLfbox{0}\;1\; 0\; 1\; \UOLfboxx{0}\; 0\; 1\; 0\; 1\; 0\; 1\; 1$
+        \item $Z_5 = 5: \qquad \UOLfbox{0\;1\; 0\; 1\;0}\;\UOLfboxx{ 0\; 1\; 0\; 1\; 0}\; 1\; 1$
+        \item $Z_7 = 4: \qquad \UOLfbox{0\;1\; 0\; 1}\;0\; 0\; 1\;\UOLfboxx{0\; 1\; 0\; 1}\; 1$
+        \item $Z_9 = 2: \qquad \UOLfbox{0\;1}\;0\;1\;0\; 0\; 1\;0\; 1\; \UOLfboxx{0\;1}\; 1$
+    \end{itemize}
+    \item What is $Z_1(S)$?
+    $$ Z_1(S) = \left\{
+    \begin{aligned}
+        & k + 1 \qquad \text{falls} \; S[0 : k] = S[1 : 1 + k] \\
+        & 0 \qquad \text{sonst}
+    \end{aligned}  
+    \right.
+    $$  
+    \item What is the complexity of a naive algorithm to compute all Z-Boxes of a string $S$ of length
+    $n$? Explain!
+    \newline
+    Für einen naiven Algorithmus liegt die Komplexität der Laufzeit in $O(m^2)$ wobei $m$ die Länge der Strings $S$ ist.
+    \begin{algorithm}
+        \NoCaptionOfAlgo
+        \caption{Z-Box\_naive (int[] S, int m)}
+        \Begin{
+        \SetAlgoVlined
+        \For{$(i = 1; i < m; i\textbf{\rm\scriptsize++})$}{ 
+            $Z_i := 0, j : = 0$ \tcc*{start from 0} \par
+            \While{$((i + j < m) \; \& \&  \; (S[j] = S[i + j]))$}
+            {
+                $Z_i := Z_i + j$; \par
+                $j := j + 1$;
+            }
+        }
+    } 
+    \end{algorithm}
+    Beide While-Schleife und For-Schleife können maximal $m - 1$ mal durchlaufen. Somit liegt die Komplexität der Laufzeit in $O(m^2)$ 
+    für einen naiven Algorithmus (siehe Pseudocode).
+    \newpage
+    \item Let $Z_i(S) > 1$ what is the end $k$ of the Z-Box at position $i$, i.e. $Z[i,\dots,k]$.
+    \newline Leider kann man hier nicht wirklich nachvollziehen, wofür $k$ steht. In \textbf{Definition (Z-Box)} ist $Z_i(S) = S[i : i + k] = S[1 : k]$,
+    aber hier ist $Z_i(S) = Z[i,\dots,k]$. Exakter Wert kann nicht ausgegeben werden aber wenn $Z_i(S) > 1$ gilt:
+    \begin{equation*}
+        Z_i(S) > 1 \Longrightarrow |Z[i,\dots,k]| > 1 \Longrightarrow k > i \land k < |S|
+    \end{equation*} 
+\end{enumerate}
+Führen Sie per Hand den Z-Box Algorithmus für $B = 010100101011$ durch. Geben Sie in einer Tabelle
+für jedes $k$ die Werte von $k', q, |\beta|, l_k, r_k$ und $Z_k$ in dieser Reihenfolge an. 
+Falls einige dieser Werte für einen Schritt irrelevant sind, kennzeichnen Sie dies.
+\newline
+\textbf{Achtung: $k' \not = k - l + 1, k' = k - l$}
+\newline
+\textbf{irrelevant Variablen: -}
+\newline \\
+    \begin{tabular}{|c||c|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline $k$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+        \hline $Z_k$ & 0 & 3 & 0 & 1 & 5 & 0 & 4 & 0 & 2 & 0 & 0 \\
+        \hline $l_k$ & 0 & 2 & 2 & 4 & 5 & 5 & 7 & 7 & 9 & 9 & 9 \\
+        \hline $r_k$ & 0 & 4 & 4 & 4 & 9 & 9 & 10 & 10 & 10 & 10 & 10 \\
+        \hline $k'$ & - & - & 1 & 0 & - & 1 & 2 & 1 & 2 & 1 & 2 \\
+        \hline $|\beta|$ & - & - & 2 & 1 & - & 4 & 4 & 3 & 2 & 1 & 0 \\
+        \hline $q$ & - & - & - & - & - & - & 11 & - & 11 & - & 11 \\
+        \hline  
+    \end{tabular}
+\end{flushleft}
+\end{document}

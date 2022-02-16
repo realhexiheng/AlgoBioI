@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage[lined,ruled]{algorithm2e}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 2}
+\author{Xiheng He }
+\date{April 2021}
+\linespread{1.5}
+\SetKwFor{For}{for (}{)\text{ do}}{}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{1. Aufgabe (10 Punkte):}
+\renewcommand\footnoterule{}
+\begin{algorithm}
+    \NoCaptionOfAlgo
+    \caption{FIND(int[] a, int x, int start, int end)}
+    \Begin{
+    \SetAlgoVlined
+    int $m := \lfloor\frac{start + end}{2}\rfloor$;\par
+    \If{$(a[m] > x)$} 
+    { 
+        \Return{\rm FIND$(a, x,start, m)$}\tcc*{If $a[m]$ is greater than $x$ then return the left half}
+    }
+    \eIf{$(a[m] < x)$}
+    {
+        \Return{\rm FIND$(a, x, m + 1, end)$}\tcc*{If $a[m]$ is smaller than $x$ then return the right half}
+    }
+    {\Return{$m$}\tcc*{$a[m] == x$ and $m$ is the position}
+    }
+    }
+\end{algorithm}\\
+\textbf{Analyse:} \\
+Eingabegröße: ||A|| = $n$. \\
+Charakteristischen Operationen: > und <. \\
+Laufzeit: Vergleich braucht einmal Pro Rekursion. Somit ist die Laufzeit: 
+    $$ A_{\rm DC}(n)=\left\{
+    \begin{aligned}
+    = & 1 &\text{falls} \quad n = 1 \\
+    = & A_{\rm DC}(\lfloor n/2 \rfloor) + 1 &\text{falls} \quad n > 1\\
+    \end{aligned}
+    \right.
+    $$
+Angenommen, dass $n = 2^k$:
+$$ A_{\rm DC}(n) = A(n/2) + 1 = A(n/4) + 2 = A(n/8) + 3 = A(2^k/2^k) + k = A(1) + log(n) = 1 + log(n) $$
+Deshalb: $A_{\rm DC}(n) \in \Theta(log(n))$. \\
+Korrektheit: Sei A sortiert, es gibt immer nur drei Fälle in jeder rekursion: $x = a[m]$, $x < a[m]$ und $x > a[m]$. 
+Wenn $x$ nicht $a[m]$ gleich ist, wird $x$ in nächster rekursion weiter gesucht. Wenn $x$ kleiner als $a[m]$ ist und
+nicht in der linken Hälfte gefunden werden kann, ist die linke Hälfte offensichtlich nicht sortiert. 
+Daher wiederspricht es und damit ist der Algorithmus korrekt. Analog kann man die rechte Hälfte auch beweisen wenn $x$ großer als $a[m]$.
+\end{flushleft}
+\end{document}

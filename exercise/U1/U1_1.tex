@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage[a4paper,left=10mm,right=10mm,top=10mm,bottom=10mm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{german}
+
+\title{Übungen zur Algorithmischen Bioinformatik \\
+Blatt 1}
+\author{Xiheng He}
+\date{April 2021}
+\linespread{1.2}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{1. Aufgabe (10 Punkte):}\par
+\text{Beweisen Sie die folgende Gleichung für $n \in \mathbb{N}$ mit $n \ge k$:}
+\begin{equation*}
+    \begin{aligned}
+        \sum_{i=k}^{n}\binom{i}{k} &= \binom{n+1}{k+1}.
+    \end{aligned}
+\end{equation*}
+\text{(a) durch vollständige Induktion;}\par
+\text{Induktionsanfang: $n=1$}
+\begin{equation*}
+    \begin{aligned}
+        \sum_{i=1}^1\binom{1}{1} = \binom{1}{1} = \binom{2}{2} = \binom{n+1}{k+1} \left(k=1, n=1\right)
+    \end{aligned}
+\end{equation*}
+\text{Induktionschritt: $n \rightarrow n+1$}\par
+\text{Induktionsvoraussetzung: $\forall n \in \mathbb{N}$ mit $n \ge k$,}
+\begin{equation*}
+    \sum_{i=k}^n\binom{i}{k} = \binom{n+1}{k+1}
+\end{equation*}
+\text{Induktionsbeweis:}\par
+\text{Zu zeigen ist, dass $\sum_{i=k}^{n+1}\binom{i}{k}=\binom{(n+1)+1}{k+1}$}\par
+\begin{equation*}
+    \begin{aligned}
+        \sum_{i=k}^{n+1}\binom{i}{k} &= \sum_{i=k}^n\binom{i}{k} + \binom{n+1}{k}\\
+        &= \binom{n+1}{k+1} + \binom{n+1}{k} (\text{Induktionsvoraussetzung})\\
+        &= \binom{n+2}{k+1} (\text{Rekursionsgleichung $\binom{n}{k}+\binom{n}{k+1}=\binom{n+1}{k+1}$})\\
+        &= \binom{(n+1)+1}{k+1}
+    \end{aligned}
+\end{equation*}
+\text{(b) durch Verwendung der folgenden Gleichung;}
+
+\begin{equation*}
+    \begin{aligned}
+        \sum_{i=k}^n\binom{i+1}{k+1} &= \sum_{i=k}^n\left(\binom{i}{k+1}+\binom{i}{k}\right)
+    \end{aligned}
+\end{equation*}
+\text{und Indexverschiebung sowie $\binom{k}{k+1} = 0$.}\par
+\text{Beweis:}
+\begin{equation*}
+    \begin{aligned}
+        \because
+        \sum_{i=k}^n\binom{i+1}{k+1} &= \sum_{i=k}^n\left(\binom{i}{k+1}+\binom{i}{k}\right)\\
+        &= \sum_{i=k}^n\binom{i}{k+1} + \sum_{i=k}^n\binom{i}{k}\\
+        \therefore
+        \sum_{i=k}^n\binom{i}{k} &= \sum_{i=k}^n\binom{i+1}{k+1} - \sum_{i=k}^n\binom{i}{k+1}\\
+        &= \sum_{i=k}^{n-1}\binom{i+1}{k+1} + \binom{n+1}{k+1} - \sum_{i=k}^n\binom{i}{k+1}\\
+        &= \sum_{i=k+1}^n\binom{i}{k+1} - \sum_{i=k}^n\binom{i}{k+1} + \binom{n+1}{k+1} (\text{Indexverschiebung})\\
+        &= \binom{n+1}{k+1} - \binom{k}{k+1} \overset{\binom{k}{k+1}=0}{=} \binom{n+1}{k+1}
+    \end{aligned}
+\end{equation*}
+\end{flushleft}
+\end{document}

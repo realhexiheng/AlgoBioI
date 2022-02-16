@@ -1,0 +1,75 @@
+\documentclass[11pt]{article}
+
+\usepackage{german}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath}
+\usepackage{algorithm2e}
+\usepackage{caption}
+\usepackage{fancyhdr}
+\usepackage[a4paper,top=2.5cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage{color}
+
+\renewcommand{\baselinestretch}{1.1}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5ex plus 0.5ex minus 0.2ex}
+
+% Für Mengen von Zahlen
+\newcommand{\nat}{\mathbb{N}}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\integer}{\mathbb{Z}}
+
+\newcommand{\set}[2]{\left\{#1\setsep#2\right\}}
+
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\renewcommand{\labelenumii}{(\roman{enumii})}
+
+\pagestyle{fancy}
+\headheight 15pt
+\chead{\small \hbox to \hsize{ Xiheng He \hfil Blatt: 3 \hfil Aufgabe: 3 \hbox to 4cm{}}}
+\cfoot{\thepage}
+
+
+\begin{document}
+ 
+\textbf{Übungen zur Algorithmischen Bioinformatik I} \\\\
+Aufgabe 3 \\\\
+Zeigen sie mit vollständiger Induktion, 
+dass  $T(n) \in \mathcal{O} (n \ log^2\ n)$ mit
+\[ T(n) = 2T(n/2) + n \ log \ n, T(1) = 0.\]
+
+Hinweis: $log^2\ n = (log\ n)^2$ \\
+
+\underline{Induktionsanfang}:\ $(n = 1)$\\
+\[ T(1) = 2T(n/2) + n \ log \ n \]
+\[     = 2T(1/2) + 1 \ log \ 1 \ = 0 \]
+\text{ Da 1 log 1 = 0 muss folgendes gelten: }
+\[     T(1/2)  = 0 \] sowie
+\[     2T(n/2)  = n \ log n \]
+
+\underline{Induktionsvorraussetzung}:\\
+Für alle $n \in N \ gilt$: \[  T(n)\in \mathcal{O}(n log^2 \ n) \]
+
+\underline{Induktionsschluss}: $n+1 \Rightarrow n$\\
+\begin{align*}
+   & T(n+1) \hspace{2mm} = 2 * T{\left(\frac{n+1}{2}\right)}+ \text{(n+1)  log(n+1)}\\ 
+    &\hspace{2mm} =  2 * \ T\left(\frac{n+1}{2}\right) \ + (n+1)\ log(n+1)\\
+    &\hspace{2mm} =  2 * \ [T\left(\frac{n}{2}\right) +                     T\left(\frac{n}{2}\right)] \ + (n+1)\ log(n+1)\\
+    &\hspace{2mm} = n \ log (n)\ +\ 0\ +\ (n+1)log(n+1) 
+                   \text{\ \ \  $\to $  vgl. Induktionsanfang}\\
+    &\hspace{2mm} =  n \ log (n)\  +\ (n+1)\ log[n(1+\frac{1}{n})] \\
+    &\hspace{2mm} =  n \ log (n)\  +\ (n+1)\ [log(n) + log(1+\frac{1}{n})]\\
+    &\hspace{2mm} =  n \ log(n)\  +\ (n+1)\ log(n) +(n+1)\ log(1+\frac{1}{n})\\
+    &\hspace{2mm} \lim \limits_{n \to \infty} (n+1) \ log(1+\frac{1}{n})=0 \Rightarrow \text{kann vernachlässigt werden }\\
+    &\hspace{2mm} = n \ log (n)\  +\ n\ log(n)\ + \ log(n) \\
+    &\hspace{2mm} \lim \limits_{n \to \infty}  \ log(n)=0
+    \Rightarrow \text{kann vernachlässigt werden }\\
+    &\hspace{2mm} = n \ log(n)^2 \\
+    &\hspace{2mm} = n\ log^2(n)\\
+\end{align*}
+\end{document}
+
+

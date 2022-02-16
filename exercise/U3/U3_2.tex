@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath}
+\usepackage{extarrows}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 3}
+\author{Xiheng He }
+\date{Mai 2021}
+\linespread{1.5}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{2. Aufgabe (10 Punkte):}\\
+wenden Sie das Master-Theorem an um die Laufzeit für folgende Rekursionsgleichungen zu bestimmmen (mit T(1) = 1) oder begründen Sie, warum das Master-Theorem nicht anwendbar ist.
+\newline
+Master-Therorm: $T(n) = a \cdot T(n/b) + f(n)$ für $n > 1$ und $T(1) = d$. dann gilt:
+    $$ T(n)=\left\{
+    \begin{aligned}
+    &\Theta(n^{\log_b (a)}) & falls \; f(n) = O(n^{\log_b (a)-e}), e > 0 \\
+    &\Theta(n^{\log_b (a)}\log(n)) & falls \; f(n) = \Theta(n^{\log_b(a)})\\
+    &\Theta(f(n)) & falls \; f(n) = \Omega(n^{\log_b(a) + e}), e > 0 \; und \; a \cdot f(n/b) \le c \cdot f(n), c < 1\\ 
+    \end{aligned}
+    \right.
+    $$
+\newline
+(a) $T(n) = 16 \cdot T(n/4) + n^2$
+\newline
+aus (a) ist $f(n) = n^2, a = 16, b = 4$
+\newline
+$f(n) = n^2 \Longrightarrow f(n) \in \Theta(n^2) \land \log_b(a) = \log_4 16 = 2 \Longrightarrow f(n) \in \Theta(\log_a(b))$
+\newline
+Daraus folgt: $T(n) = \Theta(n^{\log_b(a)}\log(n)) = \Theta(n^2\log(n))$
+\newline\\
+(b) $T(n) = 4 \cdot T(n/3) + n\log(n)$
+\newline
+aus (b) ist $f(n) = n\log(n), a = 4, b = 3$
+\newline
+$\log_b(a) = \log_3 4 \approx 1.26$
+\newline
+$\lim_{n\to\infty}\displaystyle\frac{n\log (n)}{n} = \lim_{n\to\infty}\log (n) = \infty \Longrightarrow f(n) \in O(n^k)$ mit $k > 1$, muss ein $e < 0.26$ hier betrachtet werden.  
+\newline
+setze $e = 0.01$, $\lim_{n\to\infty}\displaystyle\frac{n\log n}{n^{\log_a(b) - e}} = \lim_{n\to\infty}\displaystyle\frac{n\log n}{n^{1.25}} = \lim_{n\to\infty}\displaystyle\frac{\log n}{n^{0.25}}
+\xlongequal[\text{L’Hospital}]{\text{Satz von}} \lim_{n\to\infty}\displaystyle\frac{(n\log n)^{'}}{(n^{0.25})^{'}} = \lim_{n\to\infty}\frac{4}{n^{0.25}} = 0 \Longrightarrow f(n) = o(n^{1.25})$
+\newline
+$f(n) \in O(n^{1.25}) \land e = 0.01 > 0 \Longrightarrow T(n) = \Theta(n^{\log_b(a)}) = \Theta(n^{\log_34})$
+\newline\\
+(c) $T(n) = 4 \cdot T(n/3) + n^2$
+\newline
+$f(n) = n^2, a = 4, b = 3, \log_b(a) = \log_34 \approx 1.26$
+\newline 
+$f(n) = \Theta(n^2) \Longrightarrow f(n) = \Omega(n^2) = \Omega(n^{1.26 + e})$ mit $e = 0.74 > 0 \land 
+a \cdot f(n/b) = 4(n/3)^2 = \displaystyle\frac{4}{9}n^2 \leq c \cdot n^2 $ mit $ \displaystyle\frac{4}{9} \leq c < 1$
+$\Longrightarrow T(n) = \Theta(f(n)) = \Theta(n^2)$
+\newline\\
+(d) $T(n) = 3 \cdot T(n/3) + n\log(n)$
+\newline
+$f(n) = n\log(n), a = 3, b = 3, \log_a(b) = 1$ und aus (b) ist $f(n) = o(n^{1.25})$
+\newline
+$\Longrightarrow f(n) = O(n^{1.25}) \Longrightarrow f(n) \not = O(n^{\log_b(a) - e})$ mit $ e > 0 \land f(n) \not = \Theta(n^{log_b(a)}) = \Theta(n)$
+\newline
+$n = \Omega(n) \land \log(n) \not = \Omega(n^k)$ mit $k > 0 \Longrightarrow n\log(n) \not = \Omega(n^{1+k})$ mit $k > 0$ 
+($n\log(n)$ ist nicht polynomiell größer als $n$)
+$\Longrightarrow f(n) \not = \Omega(n^{\log_b(a) + e})$ mit $e > 0 \Longrightarrow$ Master-Therorm nicht anwendbar
+\end{flushleft}
+\end{document}

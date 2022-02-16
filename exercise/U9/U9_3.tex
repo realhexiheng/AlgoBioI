@@ -1,0 +1,109 @@
+\documentclass{article}
+\usepackage[a4paper,left=15mm,right=15mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{extarrows}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 9}
+\author{Xiheng He }
+\date{Juni 2021}
+\linespread{2.0}
+\newtheorem{theorem}{Theorem}[section]
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{3. Aufgabe: PDP (10 Punkte)}
+Aus der Vorlesung ist Ihnen das Partial Digest Problem (PDP) und ein backtracking Algorithmus
+zu seiner Lösung bekannt. Gegeben sei die Multimenge
+\newline
+$A = \{1, 2, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 19, 20\}$ von $\binom{6}{2}$ paarweisen Distanzen.
+Rekonstruieren Sie aus den gegebenen Distanzen die Lage der Restriktionsstellen unter Verwendung des in der Vorlesung
+beschriebenen Verfahrens.
+\newline
+Geben Sie alle Schritte (Zwischenlösungen) sowie das endgültige Ergebnis an. 
+\newline
+\begin{enumerate}[(a)]
+    \item $X = \{0,20\};A = \{1,2,4,5,6,7,8,9,11,12,13,14,15,19\};y = 19; S = (); \delta (19,X) = \{1,19\} \subseteq A$
+    \newline \\
+    \begin{tikzpicture}[scale=0.6]
+        \coordinate (A) at (0, 0);
+        \coordinate (B) at (19, 0);
+        \coordinate (C) at (20, 0);
+        \draw[-] (A)--(C);
+        \draw (A) node [below]{0} -- ++(0, 3pt);
+        \draw (B) node [below]{19} -- ++(0, 3pt);
+        \draw (C) node [below]{20} -- ++(0, 3pt);
+    \end{tikzpicture}
+    \item $X = \{0,19,20\};A = \{2,4,5,6,7,8,9,11,12,13,14,15\};y = 15; S = (19); \delta (15,X) = \{4,5,15\} \subseteq A$
+    \newline \\
+    \begin{tikzpicture}[scale=0.6]
+        \coordinate (A) at (0, 0);
+        \coordinate (B) at (15, 0);
+        \coordinate (C) at (19, 0);
+        \coordinate (D) at (20, 0);
+        \draw[-] (A)--(D);
+        \draw (A) node [below]{0} -- ++(0, 3pt);
+        \draw (B) node [below]{15} -- ++(0, 3pt);
+        \draw (C) node [below]{19} -- ++(0, 3pt);
+        \draw (D) node [below]{20} -- ++(0, 3pt);
+    \end{tikzpicture}
+    \item $X = \{0,15,19,20\};A = \{2,6,7,8,9,11,12,13,14\};y = 14; S = (15,19); \delta (14,X) = \{1,5,6,14\} \not \subseteq A$ \\
+    $\delta (20 - 14,X) = \delta (6,X) = \{6,9,13,14\} \subseteq A$
+    \newline \\
+    \begin{tikzpicture}[scale=0.6]
+        \coordinate (A) at (0, 0);
+        \coordinate (B) at (6, 0);
+        \coordinate (C) at (15, 0);
+        \coordinate (D) at (19, 0);
+        \coordinate (E) at (20, 0);
+        \draw[-] (A)--(E);
+        \draw (A) node [below]{0} -- ++(0, 3pt);
+        \draw (B) node [below]{6} -- ++(0, 3pt);
+        \draw (C) node [below]{15} -- ++(0, 3pt);
+        \draw (D) node [below]{19} -- ++(0, 3pt);
+        \draw (E) node [below]{20} -- ++(0, 3pt);
+    \end{tikzpicture}  
+    \item $X = \{0,6,15,19,20\};A = \{2,7,8,9,11,12\};y = 12; S = (6,15,19); \delta (12,X) = \{3,7,8,12\} \not \subseteq A$ \\
+    $\delta (20 - 12,X) = \delta (8,X) = \{7,11,12,8\} \subseteq A$
+    \newline \\
+    \begin{tikzpicture}[scale=0.6]
+        \coordinate (A) at (0, 0);
+        \coordinate (B) at (6, 0);
+        \coordinate (C) at (8, 0);
+        \coordinate (D) at (15, 0);
+        \coordinate (E) at (19, 0);
+        \coordinate (F) at (20, 0);
+        \draw[-] (A)--(F);
+        \draw (A) node [below]{0} -- ++(0, 3pt);
+        \draw (B) node [below]{6} -- ++(0, 3pt);
+        \draw (C) node [below]{8} -- ++(0, 3pt);
+        \draw (D) node [below]{15} -- ++(0, 3pt);
+        \draw (E) node [below]{19} -- ++(0, 3pt);
+        \draw (F) node [below]{20} -- ++(0, 3pt);
+    \end{tikzpicture} 
+\end{enumerate}
+\newpage
+\textbf{Suchbaum für PDP Instanz:}
+\newline \\
+\begin{center}
+    \begin{tikzpicture}[scale=1,font=\small,
+        every node/.style={black,thick,draw}
+        edge from parent/.style={black,thick,draw},
+        level 1/.style={sibling distance=8cm},
+        level 2/.style={sibling distance=4cm}]
+    \node {\{0, 20\}}
+    child {node {\{0, 19, 20\}}
+        child {node {\{0, 15, 19, 20\}}
+        child {node {\{0, 6, 15, 19, 20\}}
+        child {node {\{0, 6, 8, 15, 19, 20\}}}
+        child {node {}}}
+        child {node {}}}
+        child {node {}}
+        };
+    \end{tikzpicture}
+\end{center}
+\end{flushleft}
+\end{document}

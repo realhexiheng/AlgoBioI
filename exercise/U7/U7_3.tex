@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{extarrows}
+\usepackage{enumerate}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 7}
+\author{Xiheng He }
+\date{Mai 2021}
+\linespread{1.5}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{3. Aufgabe: Reduktion: HP auf HC (10 Punkte)}
+\newline
+Ein Hamiltonscher Pfad (HP) ist ein Pfad, der jeden Knoten eines Graphen genau einmal besucht.
+Reduzieren Sie das Entscheidungsproblem, ob es in einem Graphen einen Hamiltonschen Pfad gibt,
+auf das Hamiltonscher Kreis (HC) Problem aus der Vorlesung.
+\newline
+Hinweis: Für eine polynomielle Reduktion muss neben der Korrektheit auch die polynomielle Laufzeit
+nachgewiesen werden!
+\newline \\
+Sei zwei ungerichtete Graphen $G$ mit $G:= (V,E), V = \{v_1,\dots,v_n\}$ und $G'$ mit $G':= (V',E')$ .
+Wir konstrurieren $G'$ durch:
+\begin{itemize}
+    \item Hinzufügen eines Vertex $v_{new}$ in $G$, sodass $V' = V \cup v_{new}$  
+    \item Verbinden $v_{new}$ mit jedem Vertex $v \in V$ in $G$, sodass $E' = E \cup \{v_i, v_{new}|v_i \in V\}$
+\end{itemize}  
+Es ist leicht zu zeigen, dass die Laufzeit in $O(|V|)$ ist um $G'$ zu konstrurieren.
+\newline
+Daraus folgt, dass die Reduktion $f$ polynomielle Laufzeit besitzt, weil $T(f(x)) \in O(|V|) < O(n^k)$.
+\newline
+Anschließend zeigen wir: $\forall x \in \textbf{HP} \Leftrightarrow f(x) \in \textbf{HC}$
+\begin{itemize}
+    \item $\forall x \in \textbf{HP} \Longrightarrow f(x) \in \textbf{HC}$
+    \newline
+    Angenommen, dass \emph{Hamiltonscher Pfad} (HP) im $G$ existiert, dann gibt eine Permutation der knoten $\{v_{\pi(1)},v_{\pi(2)},
+    v_{\pi(3)},\dots,v_{\pi(n)}|n = |V|\}$ im $G$.
+    Somit existiert auch eine entsprechende Permutation der Knoten $\{v_{new}, v_{\pi(1)},v_{\pi(2)},
+    v_{\pi(3)},\dots,v_{\pi(n)}, v_{new}\}$ im $G'$ für $V'$. Diese neue Permutation ist offensichtlich einen 
+    \emph{Hamiltonscher Kreis} (HC) im $G'$ da alle knoten genau einmal besucht wurden und sich einen geschlossene Kreis 
+    bilden. Im Gegenteil falls \emph{Hamiltonscher Pfad} (HP) im $G$ nicht existiert, dann gibt keine solche Permutation, 
+    um einen \emph{Hamiltonscher Kreis} (HC) in $G'$ zu bilden.
+    \item $\forall x, f(x) \in \textbf{HC} \Longrightarrow x \in \textbf{HP}$
+    \newline
+    Angenommen, dass einen \emph{Hamiltonscher Kreis} (HC) in $G'$ gibt, dann existiert eine Permutation
+    $\{v_0, v_{\pi(1)},v_{\pi(2)},v_{\pi(3)},\dots,v_{\pi(n)}, v_0\}$. Damit bildet die neue Permutation $\{v_{\pi(1)},v_{\pi(2)},
+    v_{\pi(3)},\dots,v_{\pi(n)}\}$ einen \emph{Hamiltonscher Pfad} (HP) im $G$ mit $\{v_{\pi(i)},v_{\pi(i+1)}|v_i \in V\} \in E$.
+    Im Gegensatz wenn keiner \emph{Hamiltonscher Kreis} (HC) in $G'$ existiert, gibt es auch keine solche Permutation um den entsprechenden 
+    \emph{Hamiltonscher Pfad} (HP) in $G$ zu bilden.
+\end{itemize}
+Somit reduzieren wir \emph{Hamiltonscher Pfad} (HP) auf \emph{Hamiltonscher Kreis} (HC).
+\end{flushleft}
+\end{document}

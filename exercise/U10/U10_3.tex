@@ -1,0 +1,196 @@
+\documentclass{article}
+\usepackage[a4paper,left=5mm,right=5mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{extarrows}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage{graphicx}
+\usepackage{caption} 
+\usepackage{subcaption}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 10}
+\author{Xiheng He}
+\date{Juni 2021}
+\linespread{2.0}
+\newtheorem{theorem}{Theorem}[section]
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{3. Aufgabe: String-Matching (10 Punkte)}
+\begin{enumerate}[(a)]
+    \item Zeigen Sie die Arbeitsschritte der Algorithmen an folgendem Beispiel:
+    \begin{equation*}
+        P = {\rm ACACBDA}, T = {\rm ACACEDAACACBDAA}
+    \end{equation*}
+    \begin{itemize}
+        \item des naiven Algorithmus,
+        \newline 
+        Sehen Abbildung 1.
+        \begin{figure}
+            \centering
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{naive_1.png}
+                \caption{Schritt 1}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{naive_2.png}
+                \caption{Schritt 2}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{naive_3.png}
+                \caption{Schritt 3}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{naive_4.png}
+                \caption{Schritt 4}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{naive_5.png}
+                \caption{Schritt 5}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{naive_6.png}
+                \caption{Schritt 6}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{naive_7.png}
+                \caption{Schritt 7}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{naive_8.png}
+                \caption{Schritt 8: Match gefunden}
+            \end{subfigure}
+        \caption{Naive Algorithmus}
+        \end{figure}
+        \item des Knuth-Morris-Pratt-Algorithms (KMP)
+        \newline
+        Sehen Abbildung 2.
+        \newline \\
+        \begin{tabular}{||l|c|c|c|c|c|c|c||}
+            \hline j & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+            \hline s[j] & A & C & A & C & B & D & A \\
+            \hline border[j] & 0 & 0 & 1 & 2 & 0 & 0 & 1 \\
+            \hline
+        \end{tabular}
+        \newline
+        \begin{figure}
+            \centering
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{kmp_1.png}
+                \caption{Schritt 1: j = 4, border[4] = 2, j - border[4] = 2}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{kmp_2.png}
+                \caption{Schritt 2: j = 2, border[2] = 0, 2 - border[2] = 2}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{kmp_3.png}
+                \caption{Schritt 3: j = 0, border[0] = -1, j - border[0] = 1}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{kmp_4.png}
+                \caption{Schritt 4: j = 0, border[0] = -1, j - border[0] = 1}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{kmp_5.png}
+                \caption{Schritt 5: j = 1, border[1] = 0, j - border[1] = 1}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{kmp_6.png}
+                \caption{Schritt 6: Match gefunden}
+            \end{subfigure}
+        \caption{KMP Algorithmus}
+        \end{figure}
+        \item des Boyer-Moore-Algorithmus (BM) nur mit next-Tabelle (BM\_next)
+        \newline
+        Sehen Abbildung 3.
+        \newline \\
+        \begin{tabular}{||l|c|c|c|c|c|c|c|c||}
+            \hline j & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+            \hline S[j] & 6 & 6 & 6 & 6 & 6 & 4 & 1 & 7 \\
+            \hline
+        \end{tabular}
+        \newline
+        \begin{figure}
+            \centering
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{bm_next_1.png}
+                \caption{Schritt 1: j = 4, S[j] = 6, shift = 6}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{bm_next_2.png}
+                \caption{Schritt 2: j = 6, S[j] = 1, shift = 1}
+            \end{subfigure}
+            \begin{subfigure}{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{bm_next_3.png}
+                \caption{Schritt 3: Match gefunden}
+            \end{subfigure}
+        \caption{BM\_next Algorithmus} 
+        \end{figure}
+        \item und Boyer-Moore nur mit bad-character-rule (BM\_bad-char)
+        \newline
+        Sehen Abbildung 4.
+        \newline \\
+        \begin{tabular}{||l|c|c|c|c||}
+            \hline a & A & C & B & D \\
+            \hline ebc[a] & 6 & 3 & 4 & 5 \\
+            \hline
+        \end{tabular}
+        \newline
+    \end{itemize}
+    Erstellen Sie dazu auch die zugehörigen $next$ (improved) und $skip$ Tabellen. Machen Sie deutlich,
+    welche Verschiebungen und Vergleiche durchgeführt werden (z.B durch Zeichnungen!).
+    \newpage
+    \item Entscheidend für die ``besseren'' Shifts ist die Nutzung von Informationen über das Pattern, die
+    durch die Zeichenvergleiche gewonnen wurden:
+    \newline
+    Wenn ein $q$-Prefix ($q] P$) des Patterns $P$ und der Stelle $s + 1$ im Text $T$ matcht, also
+    \begin{equation*}
+        q] P := P[ 1,\dots,q]  = T[ s + 1,\dots,s + q] 
+    \end{equation*}
+    dann soll diese Information für den Shift ausgenutzt werden, so daß $P[1,\dots k] = T[s' + 1,\dots,s' + k]$ und
+    $s' + k = s + q$ (also ein $k$-Prefix $k]P$ von $P$ matcht ein $k$-Suffix ($k[T$) von $T$). Da aber dieses $k$-Suffix
+    von $T$ ein $k$-Suffix des $q$-Prefixes von $P$ ist, kann des vorberechnet werden durch Vergleich von $P$ gegen sich
+    selbst.
+    \newline
+    Zeigen Sie, dass der Shift $\pi$ im KMP Algorithmus für jedes $q$ genau die (Länge der) maximalen Prefixe von $q]P$
+    berechnet, die Suffixe von $q]P$ matchten:
+    \begin{equation*}
+        \pi[q] = max\{k < q | Q = P]q \land k]Q = k[Q\}
+    \end{equation*} 
+    \newline
+    In KMP Algorithmus ist Shift $\pi$ wie folgende definiert:
+    \newline
+    $\pi[q] := j - border[j]$ wobei $j$ ist die Position wo Mismatch vorkommt und $border[j]$ der Länge der Prefix und auch Suffix.
+    \newline \\
+    $q] P := P[ 1,\dots,q]  = T[ s + 1,\dots,s + q] \Longrightarrow$ Mismatch kommt an q + 1 vor und $k$ sei Länge der Prefix.
+    $\Longrightarrow \pi[q] := q + 1 - k$ 
+    \newline \\
+    Jeder Shift berechnet genau die maximalen Prefixe da Prefixe erweitert werden können somit werden die Prefixe mit maximalen Länge
+    nicht übersehen. D.h. $\pi[q] = max\{k < q | Q = P]q\}$
+    Gibt's ein von Shift berechnete Prefix, dann gibt näturlich auch ein Suffix in $P$, so dass zwei Teilfolgen übereinstimmen. D.h. 
+    $k]Q = k[Q$ Sonst wurde kein Prefix ausgegeben.
+    \newline \\
+    offensichtlich, dass $k < q$, sonst wurde statt Prefix ein Suffix mit eine Teilfolge von $T$ übereinstimen somit ein Match schon vorgekommen ist.  
+\end{enumerate}
+\end{flushleft}
+\end{document}

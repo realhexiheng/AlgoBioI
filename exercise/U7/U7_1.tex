@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage[a4paper,left=15mm,right=15mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{extarrows}
+\usepackage{enumerate}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 7}
+\author{Xiheng He, Lisanne Friedrich}
+\date{Juni 2021}
+\linespread{2.0}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{1. Aufgabe: Turing Maschine (10 Punkte)}
+\newline
+\textbf{Angabe:}
+Definieren Sie (formal) eine Turing Maschine, die das Hamilton Circuit (HC) Problem polynomiell
+auf das Traveling Salesman Problem (TSP) reduziert. Benutzen Sie die in der Vorlesung vorgestellte Reduktion und eine geeignete Repräsentation der HC und TSP Instanzen, so dass die Turing
+Maschine möglichst einfach ist. Analysieren Sie die Laufzeit Ihrer Turing Maschine.\\
+\textbf{Reduktion:}
+Als Reduktion nehmen wir die auf Folie 118 beschriebene.\\
+\textbf{Turing Maschine: }\\
+Y,1 bedeuten es existiert eine Kante, N und 2 es existiert keine Kante\\
+$ M=(Q,\Sigma ,\Gamma ,\delta ,q_0,\square,F)$\\
+$ Q=\{v,e,accept\}$\\
+$\Sigma =\{c,[0-9],/,Y,N\}$\\
+$\Gamma =\{c,[0-9],/,Y,N\}$\\
+$q_0 \in$ Q\\
+F=\{accept\}\\
+$\delta$: (v,c) $\rightarrow$ (v,c,R)\\
+(v,Y) $\rightarrow$ (e,1,R)\\
+(e,N) $\rightarrow$ (e,2,R)\\
+(e,$\square$) $\rightarrow$ (accept,$\square$,N)\\
+Die Turing Maschine geht solange nach Rechts bis sie ein Kantenymbol findet, mit dem sie überfüllen kann. So geht sie weiter vor, bis alle Kanten überfüllt sind.\\
+Zum Schluss geht sie bis zum letzen Kantensymbol, auf das ein $\square$ folgt und accepted dann.
+\newpage
+\textbf{Laufzeitanalyse:} Die Laufzeit der Reduktion ist abhängig von der Inputlänge $n$. 
+Sie liegt also in $\mathcal{O}(n)$. Der Graph kann bei $n$ Knoten maximal über $n-1$ Kanten verfügen. 
+$\Rightarrow T(n)=n*(n-1)=n^2-1 \in O(n^2)$ \\
+\textbf{Korrekheitsanalyse:} Es handelt sich um Elemtaroperationen, diese überschreiben von links nach rechts alles. Solange die Eingabe korrekt ist, ist der Algorithmus korrekt.
+\end{flushleft}
+\end{document}

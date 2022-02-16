@@ -1,0 +1,76 @@
+\documentclass{article}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{extarrows}
+\usepackage{enumerate}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 6}
+\author{Xiheng He }
+\date{Mai 2021}
+\linespread{1.5}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{3. Aufgabe: Palindrom (10 Punkte)}
+\newline
+Ein Palindrom ist ein Wort $w = w_1w_2 \dots w_n$, das vorwärts gelesen gleich ist wie rückwärts gelesen, also $w = \stackrel{\leftarrow}{w}$ 
+bzw. $\forall_{x=1,\dots,n} w_x = w_{n+1-x}$.
+\begin{enumerate}[(a)]
+    \item Gegeben sei ein Wort $w \in \{0,1\}^*$ auf dem Band einer 1-band deterministischen Turing Maschne (DTM). 
+    \newline
+    Definieren Sie formal eine DTM (d.h. $\varGamma$, $Q$ und $\delta $), welche die Palindrom-Eigenschaft für dieses
+    Wort entscheidet. Beschreiben Sie kurz, was jede einzelne Regel leistet.
+    \newline
+    $DTM = (Q, \Sigma , \varGamma , \delta, q_0, q_{accept}, q_{reject});$ \\
+    $\Sigma = \{0,1\}^*$; \\
+    $\varGamma = \{0, 1, \varepsilon\}$; \\
+    $Q = \{q_0, q_{accept}, q_{reject}, q_1^0, q_1^1, q_2^0, q_2^1, q_3\}$;
+    \newline \\
+    $\delta:=$
+    \begin{tabular}{|| c | c | c | c ||}
+        \hline $\delta$ & 0 & 1 & $\varepsilon$ \\
+        \hline
+        \hline $q_0$ & $(q_1^0, \varepsilon, R)$ & $(q_1^1, \varepsilon, R)$ & $q_{accept}$ \\
+        \hline $q_1^0$ & $(q_1^0, 0, R)$ & $(q_1^0, 1, R)$ & $(q_2^0, \varepsilon, L)$ \\
+        \hline $q_1^1$ & $(q_1^1, R, 0)$ & $(q_1^1, R, 1)$ & $(q_2^0, \varepsilon, L)$\\
+        \hline $q_2^0$ & $(q_3, \varepsilon, L)$ & $q_{reject}$ & $q_{accept}$ \\
+        \hline $q_2^1$ & $q_{reject}$ & $(q_3, \varepsilon, L)$ & $q_{accept}$ \\
+        \hline $q_3$ & $(q_3, 0, L)$ & $(q_3, 1, L)$ & $(q_0, \varepsilon, R)$ \\
+        \hline
+    \end{tabular}
+    \newline \\
+    $q_0$: akzeptiert $\varepsilon$ oder fährt nach rechts zum weiteren Vergleich und ersetzen das aktuelle Zeichen mit $\varepsilon$. \\
+    $q_1^0$ und $q_1^1$: markieren ein aktuelle Zeichen (0 oder 1) und fahren weiter nach rechts bis $\varepsilon$. \\
+    $q_2^0$ und $q_2^1$: Vergleichen das letzte Zeichen vor $\varepsilon$ mit 0 oder 1 und gehen in $q_3$ über falls zwei 
+    Zeichen übereinstimmen; ablehnen falls nicht übereinstimmen; akzeptieren falls das Zeichen $\varepsilon$ ist. \\
+    $q_3$: fährt nach links bis $\varepsilon$. \\
+    \item Analysieren Sie das Laufzeitverhalten dieser DTM.
+    \newline
+    Nach $\delta$ in DTM kann es leicht abgeleitet werden, dass es $n + 1 + n$ Schritte braucht um zwei Zeichen zu Vergleichen.
+    \begin{equation}
+        \begin{aligned}
+            &(n + 1) + n + (n - 1) + (n - 2) + (n - 3) + (n - 4) + (n - 5) + \dots + 1 \\
+            & = \sum_{i = 0}^{n+1} i \\
+            & = \frac{(n + 2)(n + 1)}{2}
+        \end{aligned}
+    \end{equation}
+    Aus (1) ist die Laufzeit dieser DTM in $O(n^2)$ 
+    \item Betrachten Sie nun eine k-Band-DTM, d.h. neben dem Eingabeband sind k-1 weitere Arbeitsbänder vorhanden, die 
+    wie das Eingabeband verwendet werden können (also auch einen eigenen Schreib-/Lesekopf besitzen). 
+    Wieviele Bänder sind ausreichend, um das Problem effizienter als die 1-Band-DTM zu lösen? 
+    Beschreiben Sie die Arbeitsweise dieser k-Band-DTM.
+    \newline \\
+    Um das Problem effizienter als die 1-Band-DTM zu lösen betrachten wir eine 2-Band-DTM, d.h. $k=2$, ein Band ist $w$ wie das Band in 1-Band-DTM und andere ist $\stackrel{\leftarrow}{w}$, 
+    d.h. diese Band ist umgedreht sodass es rückwärts gelesen werden kann. Bewegen alle zwei Bänder bis $\varepsilon$ und vergleichen 
+    jede Zeichen auf zwei Bänder das Lese-Schreibkopf aktuell zeigt. Falls zwei Zeichen inzwischen nicht übereinstimmen, 
+    dann geht 2-Band-DTM in $q_{reject}$ und das Wort ist kein Palindrom. Falls keine Zeichen bis zum Ende nicht übereinstimmen, dann ist das Wort 
+    ein Palindrom und akzeptiert 2-Band-DTM es.
+    \item Analysieren Sie das Laufzeitverhalten der k-Band-DTM.
+    \newline \\
+    Zum Bestimmen ein Palindrom braucht 2-Band-DTM genau $2n$ mal Operationen (Band Bewegung 1 mal und Vergleich 1 mal) 
+    wobei $n$ Länge des Wortes ist.
+    Somit beträgt die Laufzeit der 2-Band-DTM in $O(n)$. 
+\end{enumerate}
+\end{flushleft}
+\end{document}

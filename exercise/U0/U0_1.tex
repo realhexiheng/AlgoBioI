@@ -1,0 +1,21 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{Übungen zur Algorithmischen Bioinformatik I
+Blatt 0}
+\author{Xiheng He }
+\date{April 2021}
+\begin{document}
+\maketitle
+\title{1. Aufgabe (5 Punkte):}
+	\begin{equation*}
+	    \begin{aligned}
+			A_{\text{DP}}(n) &= \sum_{i=1}^{n}\sum_{j=i+1}^{n}1\\
+	                   &= \sum_{i=1}^{n}(n-i)\\
+	                   &\quad\text{Rückwärtige Summation}\\
+	                   &= \sum_{i=0}^{n-1}i\\
+	                   &= \binom{n}{2}\\
+	                   &= \frac{n^{2}-n}{2}
+	    \end{aligned}
+	\end{equation*}
+\end{document}

@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath}
+\usepackage{extarrows}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 3}
+\author{Xiheng He }
+\date{Mai 2021}
+\linespread{1.3}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{1. Aufgabe (10 Punkte):}\\
+Lösen Sie die folgende inhomogene lineare Rekursionsgleichung mit Hilfe des Satzes zur Lösung homogener 
+linearer Rekursionsgleichungen endlicher Ordnung aus der Vorlesung.
+\begin{equation*}
+    a_n = 2a_{n-1} - a_{n-2} + 1 \text{\qquad und \qquad} a_0 = 0, \quad a_1 = 1.
+\end{equation*}
+Zeigen Sie mit vollständige Induktion, dass Ihre Lösung richtig ist.
+\begin{align}
+    a_n &= 2a_{n-1} - a_{n-2} + 1 \\
+    a_{n-1} &= 2a_{n-2} - a_{n-3} + 1 \\
+    (1) - (2):& \quad a_n - 3a_{n-1} + 3a_{n-2} - a_{n-3} = 0 \quad (\text{Umformung der inhomogenen linearen Rekursionsgleichung})\\
+    p(x) &= x^3 - 3x^2 + 3x - 1 = (x-1)^3 \quad (\text{Charakteristische Polynom})
+\end{align}
+\newline
+Aus (4) folgt $x_1 = x_2 = x_3 = 1$, Nach allgeminer Lösung homogener linearer Rekursionsgleichung folgt, dass
+\begin{align}
+    a_n &= \sum_{i = 1}^{m = 1}\sum_{j = 0}^{2} C_j \cdot n^{\underline{j}} \cdot x^n \\
+        &= C_0 \cdot 1 \cdot 1 + C_1 \cdot n \cdot 1 + C_2 \cdot n(n-1) \cdot 1 \quad(C_j := \alpha_{i,j} )  
+\end{align}
+Aus (6), Mit $a_0 = 0, a_1 = 1$ und $a_2 = 2a_1 - a_0 + 1 = 3$ folgt:
+\begin{align}
+    a_0 &= C_0 + C_1 \cdot 0 + C2 \cdot 0 = 0 \Longrightarrow C_0 = 0\\
+    a_1 & = C_0 + C_1 + C2 \cdot 0 = C_0 + C_1 = 1 \Longrightarrow C_1 = 1\\
+    a_2 & = C_0 + 2C_1 + 2C_2 = 3 \Longrightarrow C_2 = \frac{1}{2}\\
+    a_n & = n + \frac{n(n-1)}{2} = \frac{n(n+1)}{2}
+\end{align}
+Induktionsanfang: $n=0 \Longrightarrow a_0 = \displaystyle\frac{0(0+1)}{2} = 0$
+\newline
+Induktionsvoraussetzung: $a_n = \displaystyle\frac{n(n+1)}{2}$
+\newline
+Induktionschritt: $n \longrightarrow n+1$
+\newline
+Induktionsbeweis:
+\begin{align*}
+    a_{n+1} &= 2a_n - a_{n-1} + 1\\
+    &\overset{(10)}{=} 2(\frac{n(n+1)}{2}) - \frac{(n-1)n}{2} + 1\\ 
+    &= \frac{2n^2 + 2n - n^2 + n + 2}{2}\\
+    &= \frac{n^2 + 3n +2}{2}\\
+    &= \frac{(n+1)(n+2)}{2} \qed
+\end{align*}
+\end{flushleft}
+\end{document}

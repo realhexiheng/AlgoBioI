@@ -1,0 +1,134 @@
+\documentclass{article}
+\usepackage[lined,ruled]{algorithm2e}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amsmath}
+\title{Übungen zur Algorithmischen Bioinformatik I
+Blatt 0}
+\author{Xiheng He }
+\date{April 2021}
+\SetKwFor{For}{for (}{)\text{ do}}{}
+\begin{document}
+\maketitle
+\textbf{2. Aufgabe (10 Punkte):}
+\renewcommand\footnoterule{}
+\begin{algorithm}
+    \caption{MSS (int[] a, int n)}
+    \Begin{
+    \SetAlgoVlined
+    $maxscore := 0 ; \qquad \ell := 1; \qquad r := 0$ \par
+    $rmaxscore := 0; \qquad rstart := 1; \qquad sstart := \ell;$ \par
+    \For{$i := 1; i \leq n; i\textbf{\rm\scriptsize++}$}{
+        \If{$(rmaxscore > 0)$}{
+            $rmaxscore := rmaxscore + a[i]$;
+        }
+        \Else{$rmaxscore := a[i]; rstart :=i$;}
+        }
+        \If{$ (rmaxscore > maxscore)$}
+        {$maxscore := rmaxscore; \ell := rstart; r := i;$\par
+        $allScores := \{(maxscore, \ell, r)\}$\par
+        $ssstart := \ell;$}\par
+        \ElseIf{ $(rmaxscore = maxscore \wedge ssstart \neq rstart)$ }
+        {$allScores := allScores \cup \{(maxscore, rstart, i)\};$\par
+        $sstart := rstart;$}
+    }
+\end{algorithm}
+\footnoterule{\\Der Algorithmus wird linear durchlaufen, daher beträgt die Laufzeit $O(n)$ }\\
+\begin{algorithm}
+    \caption{SMSS (int[] a, int n)}
+    \Begin{
+        \SetAlgoVlined
+        $maxscore := 0 ; \qquad \ell := 1; \qquad r := 0$ \par
+        $rmaxscore := 0; \qquad rstart := 1; \qquad sstart := \ell; \qquad min\_len := +\infty$ \par
+        \For{$i := 1; i \leq n; i\textbf{\rm\scriptsize++}$}{
+            \If{$(rmaxscore > 0)$}{
+                $rmaxscore := rmaxscore + a[i]$;
+            }
+            \Else{$rmaxscore := a[i]; rstart :=i$;}
+            }
+            \If{$ (rmaxscore > maxscore)$}
+            {$maxscore := rmaxscore; \ell := rstart; r := i;$\par
+            $allScores := \{(maxscore, \ell, r)\}$\par
+            $min\_len := \ell - r + 1;$ \par
+            $sstart := \ell;$}\par  
+            \ElseIf{$(rmaxscore = maxscore$ \rm\textbf{and} $sstart \neq rstart)$}
+            {\If{$(\ell - r + 1 < min\_len)$}{
+                $allScores := \{(maxscore, \ell, r)\}$\par
+                $sstart := rstart;$
+            }
+            \ElseIf{$(\ell - r + 1 = min\_len)$}{
+                $allScores := allScores \cup \{(maxscore, rstart, i)\};$\par
+                $sstart := rstart;$
+            }
+            }
+    }
+    \end{algorithm}
+\footnoterule{\\Die Laufzeit beträgt weiterhin $O(n)$ }\\\\
+\begin{algorithm}
+    \caption{MSS\_All (int[] a, int n)}
+    \Begin{
+    \SetAlgoVlined
+    $(maxscore, \ell, r) := \rm MSS\_DC$$(a,1,n)$; \par
+    int[] $ss\_start$; \par
+    int[] $ss\_end$; \par
+    int[] $ss\_score$; \par
+    }
+    $\rm(int, int, int) MSS\_DC$(int[] $a$, int $i,j$);\par
+    \Begin{
+    \SetAlgoVlined
+    \If{$(i = j)$}{
+        \If{$(a[i] > 0)$}{\Return{$(a[i],i,i)$}}
+        \Else{\Return{$(0,i,i - 1)$}}
+    }
+    \Else{
+        $m := \lfloor\frac{i+j-1}{2}\rfloor$; \par
+        $(s_1,i_1,j_1) := \rm MSS\_DC$$(a,i,m)$; \par
+        $(s_2,i_2,j_2) := \rm MSS\_DC$$(a,m + 1,j)$; \par
+        $i_3 := m$; \par
+        $s := a[i_3]$; \par
+        $simax := s$; \par
+        \For{$k := i_3 - 1; k \geq i; k--$}{
+            $s := s + a[k]$; \par
+            \If{$(s > simax)$}{
+                $simax := s$; \par
+                $i_3 := k$;
+            }
+        }
+        $j_3 := m + 1$; \par
+        $s := a[j_3]$; \par
+        $sjmax := s$; \par
+        \For{$ k := j_3 + 1; k \leq j; k++$}{
+            $s := s + a[k]$; \par
+            \If{$(s > sjmax)$}{
+                $sjmax := s$; \par
+                $j_3 := k$;  
+            }
+        }
+        $ s_3 := simax + sjmax$; \par
+        \If{$(len(ss\_score) \ne 0$ \rm\textbf{and} $max{ss\_score} < max{s_1,s_2,s_3})$}{
+            $ss\_start$ = new int[];
+            $ss\_end$ = new int[];
+            $ss\_score$ = new int[];
+        }
+        \If{$(max{s_1,s_2,s_3} = s_1)$}{
+            $ss\_start$ = $ss\_start$ + $i_1$; \par
+            $ss\_end$ = $ss\_end$ + $j_1$; \par
+            $ss\_score$ = $ss\_score$ + $s_1$; \par
+            \Return{$(s_1,i_1,j_1)$};
+        }
+        \eIf{$(max{s_1,s_2,s_3} = s_2)$}{
+            $ss\_start$ = $ss\_start$ + $i_2$; \par
+            $ss\_end$ = $ss\_end$ + $j_2$; \par
+            $ss\_score$ = $ss\_score$ + $s_2$; \par
+            \Return{$(s_2,i_2,j_2)$};
+        }
+        {
+            $ss\_start$ = $ss\_start$ + $i_3$; \par
+            $ss\_end$ = $ss\_end$ + $j_3$; \par
+            $ss\_score$ = $ss\_score$ + $s_3$; \par
+            \Return{$(s_3,i_3,j_3)$};
+        }
+        }
+    }
+\end{algorithm}
+\footnoterule{\\Die Laufzeit ist $O(nlogn)$ da es sich um Divide-Conquer Algorithmus handelt.}
+\end{document} 

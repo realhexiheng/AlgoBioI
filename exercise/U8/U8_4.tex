@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage[a4paper,left=15mm,right=15mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{extarrows}
+\usepackage{enumerate}
+\usepackage{german}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{float} 
+\usepackage{subfigure}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 8}
+\author{Xiheng He }
+\date{Juni 2021}
+\linespread{2.0}
+\newtheorem{theorem}{Theorem}[section]
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{4. Aufgabe: PRO-THREAD (10 Punkte)}
+\begin{enumerate}[(a)]
+    \item Konstruieren Sie das Threading Problem für folgende 1-in-3-SAT Formel:\
+    \begin{equation}
+        (u_1 \lor u_2 \lor \lnot u_3)\land(\lnot u_1 \lor \lnot u_3 \lor u_4)\land
+        (\lnot u_2 \lor \lnot u_3 \lor \lnot u_4)\land(u_1 \lor u_3 \lor u_4)
+    \end{equation}
+    Gehen Sie dabei wie in der Vorlesung vor, und geben Sie auch explizit den Interaktionsgraphen an.
+    \newline
+    $U = \{u_1,u_2,u_3,u_4\}$ \\
+    $B = (u_1 \lor u_2 \lor \lnot u_3)\land(\lnot u_1 \lor \lnot u_3 \lor u_4)\land
+    (\lnot u_2 \lor \lnot u_3 \lor \lnot u_4)\land(u_1 \lor u_3 \lor u_4)$ \\
+    $U = \{u_1 = F, u_2 = T, u_3 = T, u_4 = F\}$ \\
+    $B = (F \lor T \lor F)\land(T \lor F \lor F)\land(F \lor F \lor T)
+    \land(F \lor T \lor F)$ \\
+    $\{(b_1,v_1),(b_2,v_2),(b_3,v_3),(b4,v_4),(u_1,v_5),(u_2,v_6),(u_3,v_7),(u_4,v_8)\}$
+    \newline
+    \begin{figure}[htp]
+    \centering
+    \includegraphics[width = 16cm]{graph.png}
+    \end{figure}
+    \newpage
+    \item Ist diese Formel erfüllbar? Geben Sie eine Wahrheitsbelegung an.
+    \newline
+    Diese Formel ist erfüllbar.
+    \newline
+    setze $u_1:= F, u_2:= T, u_3:= T, u_4:= F \Longrightarrow (F \lor T \lor F)\land(T \lor F \lor F)\land(F \lor F \lor T)
+    \land(F \lor T \lor F)\Longrightarrow$ (1) ist erfüllbar.
+    \item Wie sieht das entsprechende Threading aus?
+    \newline
+    PRO-THREAD: $(G,l,C,a,f)$
+    \newline
+    $t = (2,4,9,11,14,15,17,20)$
+\end{enumerate}
+\end{flushleft}
+\end{document}

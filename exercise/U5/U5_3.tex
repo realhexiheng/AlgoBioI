@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{extarrows}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 5}
+\author{Xiheng He }
+\date{Mai 2021}
+\linespread{1.5}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{3. Aufgabe: ’Collatz’-Zahlenfolge (10 Punkte, Bonus)}\\
+Eine Folge $a_0,a_1,\dots a_n$ natürliche Zahlen ist durch einen Startwert $a_0 > 1$ und die 
+folgende Vorschrift (3-5\_Collatz) bestimmt:
+\begin{equation}
+a_{i+1} = \left\{
+\begin{aligned}
+    &a_i \div 3 \qquad\text{falls $a_i$ (ohne Rest) durch 3 teilbar} \\
+    &a_i + 5 \qquad\text{sonst}
+\end{aligned}
+\right.
+\end{equation}
+Für welche Startwerte $a_0$ gibt es ein $n$ mit $a_n$ = 1?
+$$
+\begin{aligned}
+    &a_0 = 2: 2, 7, 12, 4, 9, 3, 1 \\
+    &a_0 = 3: 3, 1 \\
+    &a_0 = 4: 4, 9, 3, 1 \\
+    &a_0 = 5: 5, 10, 15, 5, 10, 15, 5, 10, 15,\dots \Longrightarrow 5-10-15-5 \\
+    &a_0 = 6: 6, 2, 7 ,12, 4, 9, 3, 1 \\
+    &a_0 = 7: 7, 12, 4, 9 , 3, 1 \\
+    &a_0 = 8: 8, 13, 18, 6, 2, 7, 12, 4, 9, 3, 1 \\
+    &a_0 = 9: 9, 3, 1 \\
+    &a_0 = 10: 10, 15, 5, 10,\dots \Longrightarrow 5-10-15-5 \\
+    &a_0 = 11: 11, 16, 21, 7, 12, 4, 9, 3, 1 \\
+    &a_0 = 12: 12, 4, 9, 3, 1 \\
+    &a_0 = 13: 13, 18, 6, 2, 7, 12, 4, 9, 3, 1 \\
+    &a_0 = 14: 14, 19, 24, 8, 13, 18, 6, 2, 7, 12, 4, 9, 3, 1 \\
+    &a_0 = 15: 15, 5, 10, 15,\dots \Longrightarrow 5-10-15-5 \\
+    &a_0 = 16: 16, 21, 7, 12, 4, 9, 3, 1 \\
+    &a_0 = 17: 17, 22, 27, 9, 3, 1 \\
+    &a_0 = 18: 18, 6, 2, 7, 12, 4, 9, 3, 1 \\
+    &a_0 = 19: 19, 24, 8, 13, 18, 6, 2, 7, 12, 4, 9, 3, 1 \\
+    &a_0 = 20: 20, 25, 30, 10, 5, 10, 15, 5, 10,\dots \Longrightarrow 5-10-15-5
+\end{aligned}
+$$
+Vermutung 1: Für alle näturliche Zahlen $a_0 > 1$, die durch 5 teilbar sind, werden in den Zyklus 5, 10, 15, 5 
+übergehen und können sich nicht beenden.
+\newline\\
+Vermutung 2: Für alle natürliche Zahlen $a_0 > 1$, die nicht durch 5 teilbar sind, werden in den Zyklus 9, 3, 1 
+übergehen und können sich an 1 beenden.
+\newline \\
+Beweisen Sie Ihre Vermutung, zum Beispiel durch vollständige Induktion!
+\newline
+Vermutung 1:
+\begin{itemize}
+    \item Induktionsanfang: $a_0 = 5: 5, 10, 15, 5, 10, 15, 5, 10, 15,\dots \Longrightarrow \textbf{Zyklus}: 5-10-15-5$ \\
+    \item Induktionsvoraussetzung: Für alle näturliche Zahlen $a_0 > 1$, die durch 5 teilbar sind, werden in den Zyklus 5, 10, 15, 5 
+    übergehen und sich nicht beenden.
+    \item Induktionschritt: $n \longrightarrow n+1$ 
+    \item Induktionsbeweis: $a_n, a_{n + 1}$ sei näturliche Zahlen und sind durch 5 teilbar. \\
+    $$ a_{n + 1} = \left\{
+    \begin{aligned}
+        5 + 5 = 10 \overset{(1)}{\Longrightarrow} 15, 5, 10, 15, 5 \Longrightarrow \textbf{Zyklus}: 5-10-15-5 
+        &\qquad\text{falls } a_n = 5 \\
+        10 + 5 = 15 \overset{(1)}{\Longrightarrow} 5, 10, 15, 5 \Longrightarrow \textbf{Zyklus}: 5-10-15-5 
+        &\qquad\text{falls } a_n = 10 \\
+        15 + 5 = 20  \overset{(1)}{\Longrightarrow} 25, 30, 10, 5, 10, 15, 5 \Longrightarrow \textbf{Zyklus}: 5-10-15-5 
+        &\qquad\text{falls } a_n = 15 \qed
+    \end{aligned}
+    \right.
+    $$ \\
+\end{itemize}
+Vermutung 2:
+$a_n, a_{n + 1}$ sei näturliche Zahlen und sind nicht durch 5 teilbar. Setze $f(a_n) := a_{n + 1}$ d.h. $f(a_n)$ sei 
+’Collatz’ Funktion. 
+
+\begin{itemize}
+    \item Induktionsanfang $a_0 = 2: 2, 7, 12, 4, 9, 3, 1 \land a_1 = 7, 12, 4, 9, 3, 1\Longrightarrow \textbf{Zyklus}: 9-3-1 \land \textbf{endet an } 1$
+    \item Induktionsvoraussetzung: Für alle natürliche Zahlen $a_0 > 1$, die nicht durch 5 teilbar sind, können sich an 1 beenden.
+    \item Induktionschritt: $n \longrightarrow n+1$ 
+    \item Induktionsbeweis: 
+    $$ a_{n + 1} = f(a_n)\left\{
+    \begin{aligned}
+        &f(9) \overset{(1)}{\Longrightarrow} f(3) \overset{(1)}{\Longrightarrow} 1 \Longrightarrow \textbf{Zyklus}: 9-3-1 \land \textbf{endet an } 1
+        \qquad\text{falls } a_n = 9 \\
+        &f(3) \overset{(1)}{\Longrightarrow} 1 \underset{\text{abgeleitet werden}}{\overset{\text{3 kann nur aus 9}}{\Longrightarrow}} \textbf{Zyklus}: 9-3-1
+        \land \textbf{endet an } 1 
+        \qquad\text{falls } a_n = 3 \qed
+    \end{aligned}
+    \right.
+    $$ \\
+     
+\end{itemize}
+Was ist der Unterschied zur Collatz-Folge, die Sie aus der Vorlesung kennen?
+Hinweis: Überlegen Sie sich zunächst, in welchen Fällen die Reihe konvergiert bzw. nicht konvergiert.
+\newline
+\begin{itemize}
+    \item Die Vorschrift ist unterschiedlich. In dieser Alternative eine natürliche Zahl wird entweder durch 3 geteilt 
+    falls sie ohne Rest teilbar ist oder 5 addiert 5. In originaler Collatz-Folge wird eine nicht gerade Zahl mit 3 
+    multipliziert und 1 addiert und eine gerade Zahl durch 2 geteilt.
+    \item In dieser Alternative ist es gezeigt, dass für alle natürliche Zahlen die durch 5 teilbar sind, sich nicht beenden 
+    können. In originaler Collatz-Folge wurden noch keine endlose Zahlenfolge gefunden.
+    \item In dieser Alternative gibt ein Zyklus 9, 3, 1 für endliche Zahlenfolge und ein Zyklus 5, 10, 15, 5 für endlose 
+    Zahlenfolge. In originaler Collatz-Folge endet eine Zahlenfolge in den Zyklus 4, 2, 1.
+\end{itemize}
+\end{flushleft}
+\end{document}

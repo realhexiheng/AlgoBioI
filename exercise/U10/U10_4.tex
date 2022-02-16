@@ -1,0 +1,98 @@
+\documentclass{article}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{extarrows}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage{german}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 10}
+\author{Xiheng He}
+\date{Juni 2021}
+\linespread{2.0}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{4. Aufgabe: KMP und BM Implementierung (10 Punkte)}
+\newline
+Implementieren Sie die Algorithmen (Siehe Aufgabe 1): KMP, BM\_next und BM\_bad-char.
+\begin{enumerate}[(a)]
+    \item Begründen Sie jeweils die Korrektheit des Algorithmus bzw. Ihrer Implementierung.
+    \begin{itemize}
+        \item Korrektheit des KMP Algorithmus:
+        \begin{lemma}
+            Gilt $s_k = t_{i + k}$ für alle $k \in [0 : j - 1]$ und $s_j \not = t_{i + j}$, dann ist der Shift
+            $i \rightarrow i + j - border[j]$ sicher.
+        \end{lemma}
+        Nach Lemma 1 (Lemma 2.9 auf Skript S.112) ist jede Verschiebung um $j - border[j]$ nicht nur sicher sondern auch
+        zulässig. D.h. Wenn $s$ am Ende nicht mehr verschoben werden kann, steht $s$ nicht in $t$. Sonst kann $s$ nach mehrmals
+        Verschiebungen gefunden werden und $s$ kann nicht wegen Verschiebung in $t$ übersprungen werden da jede Verschiebung 
+        um $j - border[j]$ sicher und zulässig.
+        \item Korrektheit des BM\_next
+        \newline
+        Die Shift Tabelle für Good-Suffix-Rule des Boyer-Moore Algorithmus berechnet wesentlich auch die Ränder von Teilwörtern
+        des gesuchten Wortes. Daher ist jede Verschiebungen nach Lemma 1 (Lemma 2.9 auf Skript S.112) auch sicher wenn $s_j \not = t_{i + j}$ 
+        und $s_k = t_{i + k}$ für alle $k \in [0 : j - 1]$ somit ignoriert der Algorithmus nicht wenn ein Match vorkommt.
+        \item Korrektheit des BM\_bad-char
+        \newline 
+        Analog ist die jede Verschiebung nach ``bad-character-rules'' auch sicher. In Boyer-Moore Algorithmus ist 
+        \newline
+        Bei einem Mismatch von $s_j$ mit $t_{i + j}$ wird $s$ so verschoben, dass das rechteste Vorkommen von $t_{i + j}$
+        in $s$ genau unter $t_{i + j}$ zu liegen kommt damit bedeutet dies, dass es keine übereinstimmende Zeichenfolge $s$
+        übersprungen werden kann da es nur Mismatch von rechtesten Vorkommen bis Position $j$ steht. Ferner, ist die Verschiebung
+        auch sicher wenn $s$ um $m$ verschoben wird da das Zeichen des Mismatch $t_{i + j}$ in $s$ gar nicht gibt. 
+        Der Algorithmus ist damit korrekt wenn jede Verschiebung sicher ist. Das gesuchte $s$ wird entweder nach mehrmals Verschiebungen
+        gefunden oder existiert in $t$ nicht. 
+    \end{itemize}
+    \item Analysieren Sie die Laufzeit Ihrer Verfahren.
+    \begin{itemize}
+        \item Laufzeitanalyse des KMP Algorithmus
+        \begin{theorem}
+            Für die Berechnung der Tabelle border sind maximal $2m − 1$ Zeichenvergleiche
+            notwendig.
+        \end{theorem}
+        \begin{theorem}
+            Der Algorithmus von Knuth, Morris und Pratt benötigt maximal $2n + m$ Zeichenvergleiche, um festzustellen,
+            ob ein Muster $s$ der Länge $m$ in einem Text $t$ der Länge $n$ enthalten ist.
+        \end{theorem}
+        Nach Theorem 1 (Theorem 2.13 auf Skript S.118) und Theorem 2 (Theorem 2.13 auf Skript S.118) beträgt die Laufzeit des KMP Algorithmus in $O(n + m)$.
+        \item Laufzeitanalyse des BM\_next
+        \begin{theorem}
+            Der Boyer-Moore Algorithmus benötigt maximal $3(n+m)$ Zeichenvergleiche, um zu entscheiden, 
+            ob eine Zeichenreihe der Länge $m$ in einem Text der Länge $n$ enthalten ist.
+        \end{theorem}
+        Nach Theorem 3 (Theorem 2.22 auf Skript S.141) ist die Laufzeit des BM\_next in $O(n + m)$.
+        \item Laufzeitanalyse des BM\_bad-char
+        \newline Da eine Konstruktion der Tabelle für bad-character eine Laufzeit mit $O(|\Sigma|)$ benötigt 
+        (für Extended-Bad-Character-Rule wird $O(m \cdot |\Sigma|)$) ist die Laufzeit in $O(n + |\Sigma|)$.
+    \end{itemize}
+    \item Messen Sie die Laufzeit Ihrer Implementierungen und Vergleichen Sie mit dem naiven Algorithmus!
+    \newline \\
+    \begin{tabular}{||l|c|c|c|c|c||}
+        \hline input size & $n = 10^4, m = 10^2$ & $n = 10^6, m = 10^2$ & $n = 10^7, m = 10^2$ & $n = 10^8, m = 10^2$ & $n = 10^9, m = 10^3$\\
+        \hline \textbf{Naive} & 0ms & 5ms & 22ms & 113ms & 1688ms \\
+        \hline \textbf{KMP} & 0ms & 5ms & 11ms & 37ms & 482ms \\
+        \hline \textbf{BM\_next} & 0ms & 0ms & 4ms & 14ms & 214ms \\
+        \hline \textbf{BM\_bad-char} & 0ms & 4ms & 11ms & 46ms & 698ms \\
+        \hline
+        \end{tabular}
+    \newline
+    \item Zählen Sie wieder die Zeichen-Vergleiche um die theoretischen Analysen zu validieren.
+    \newline
+    Gegeben sei $t$ = ACACEDAACACBDAA, $s$ = ACACBDA, $n = 15, m = 7$
+    \newline \\
+    \begin{tabular}{||l|c|c||}
+        \hline & praktisch & theoritsch (maximal) \\
+        \hline \textbf{Naive} & 14 & 63 \\
+        \hline \textbf{KMP} & 16 & 37 \\
+        \hline \textbf{BM\_next} & 14 & 66 \\
+        \hline \textbf{BM\_bad-char} & 9 & $O(nm)$ \\
+        \hline
+        \end{tabular}
+    \newline
+\end{enumerate}
+\end{flushleft}
+\end{document}

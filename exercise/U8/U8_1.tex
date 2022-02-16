@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage[a4paper,left=15mm,right=15mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{extarrows}
+\usepackage{enumerate}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 8}
+\author{Xiheng He }
+\date{Juni 2021}
+\linespread{2.0}
+\newtheorem{theorem}{Theorem}[section]
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{1. Aufgabe: MONOTONE 3-SAT (10 Punkte)}
+\newline
+Eine $monotone$ Formel $F$ hat die Form $G \land H$, wobei $G$ eine Boole’sche Formel in 3-CNF ist, die
+ausschließlich positive Literale enthält, und $H$ eine Boole’sche Formel in 3-CNF ist, die ausschließlich
+negierte Literale enthält. Das Problem $MONOTONE-3-SAT$ besteht darin, zu entscheiden, ob eine gegebene monotone 
+Boole’sche Formel $F$ erfüllbar ist. Zeigen Sie, dass dieses Problem $NP$-vollständig ist.
+\newline
+Zu zeigen ist, dass Problem MONOTONE 3-SAT NP-vollständig ist.
+\newline
+Zunächst zeigen wir, dass MONOTONE 3-SAT $\in \mathcal{N} \mathcal{P}$.
+\begin{itemize}
+    \item Angenommen, dass MONOTONE 3-SAT $n$ Variable besitzt, dann existiert einen Algorithmus mindestens in $O(2^n)$
+    um eine Wahrheitsbelegung zu finden.
+    \item Einer Algorithmus zur Validierung der beliebigen Erfüllbarkeit für dass MONOTONE 3-SAT kann aber in polynomieller
+    Laufzeit durchführen da alle Variable festgelegt wurden und nur die Erfüllbarkeit überprüft werden muss.
+    D.h. Es gibt aber eine polynomiell zeitbeschränkte DTM $M$ und ein Polynom $q$, so dass $M$ in nach höchstens 
+    $p(|x|)$ Schritten die Eingabe verfizieren (akzeptieren oder ablehnen) kann.
+\end{itemize}
+Daraus folgt: MONOTONE 3-SAT $\in \mathcal{N} \mathcal{P}$
+\newline
+Anschließend zeigen wir: $\forall x \in \textbf{3-SAT} \Leftrightarrow f(x) \in \textbf{MONOTONE 3-SAT}, T(f(x)) \in O(n^k)$
+\newline
+Wir definieren eine beliebige Boole’sche Formel $F$ in 3-CNF-SAT.
+\begin{itemize}
+    \item $F$ hätte nur ein Literal: dann muss $F$ entweder positiv oder negativ. Wir umformen die positive $F$ in $G$,
+    oder die negative $F$ in $G$. 
+    \item $F$ hätte genau zwei Literale: $F := (x \lor \lnot y)$, dann gilt nach Umformung: $G \land H := (x \lor z) \land (\lnot y \lor \lnot z)$
+    mit $(x \lor z) \in G, (\lnot y \lor \lnot z) \in H$. Falls die beide zwei Literale in $F$ monoton positiv oder negativ, dann 
+    kann $F$ ohne zusätzliche Variable in $G$ (positiv) oder $H$ (negativ) umgeformt werden.
+    \item $F$ hätte genau drei Literale:
+    \newline
+    (1):$F := (x \lor y \lor \lnot z)$, dann gilt nach Umformung: $G \land H := (x \lor y \lor l) \land (\lnot z \lor \lnot l)$ mit 
+    $(x \lor y \lor l) \in G, (\lnot z \lor \lnot l) \in H$ 
+    \newline
+    (2):$F := (x \lor \lnot y \lor \lnot z)$, dann gilt nach Umformung: $G \land H := (x \lor l) \land (\lnot y \lor \lnot z \lor \lnot l)$
+    mit $(x \lor l) \in G, (\lnot y \lor \lnot z \lor \lnot l) \in H$ 
+    \newline
+    (3):Falls alle drei Literale in $F$ monoton positiv oder negativ, dann 
+    kann $F$ ohne zusätzliche Variable in $G$ (positiv) oder $H$ (negativ) umgeformt werden. 
+\end{itemize}
+In worst-case muss jede Klausel in $F$ transformiert werden und es benötigt höchstens 2 mal Operationen zur 
+Umformung der jeden Klausel damit hat $f(x)$ offensichtlich eine lineare Laufzeit (auch polynomielle Laufzeit). 
+\newline
+Daraus folgt: $T(f(x)) \in O(n^k)$
+\begin{itemize}
+    \item kann $F$ erfüllt werden, bedeutet dass mindestens ein Literal $true$ hat damit hat mindestens eine Formel von $G$ und $H$ eine
+    Wahrheitsbelegung. Dann kann die andere Formel auch erfüllt werden denn wir können sowieso die zusätzliche Variable einen $true$
+    setzen somit wird $G \land H$ auch erfüllt. Wenn $F$ nicht erfüllbar ist, kann $G \land H$ auch nicht.
+    \item Kann $G \land H$ erfüllt werden, bedeutet dass beide $G$ und $H$ $true$ sind so dass $F$ allerdings eine Wahrheitsbelegung hat.
+    Sind $G \land H$ nicht erfüllbar, ist $F$ auch nicht.
+\end{itemize}
+Deshalb:
+\begin{itemize}
+    \item MONOTONE 3-SAT $\in \mathcal{N} \mathcal{P}$
+    \item 3-SAT ist NP-vollständig.
+    \item 3-SAT $\propto$ MONOTONE 3-SAT
+    \item $\Longrightarrow$ MONOTONE 3-SAT ist NP-vollständig.
+\end{itemize}
+\end{flushleft}
+\end{document}

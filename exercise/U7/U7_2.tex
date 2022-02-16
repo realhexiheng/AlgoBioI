@@ -1,0 +1,38 @@
+\documentclass{article}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{extarrows}
+\usepackage{enumerate}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 7}
+\author{Xiheng He, Lisanne Friedrich}
+\date{Juni 2021}
+\linespread{2.0}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{2. Aufgabe: Orakel (10 Punkte)}
+\newline
+\textbf{a)}
+\newline
+\textbf{Angabe:}
+Angenommen Sie haben ein Orakel, welches das Travelling Salesman Entscheidungsproblem in
+konstanter Zeit für Sie löst (Entscheidungsproblem: Gibt es eine Tour, die nicht länger als $k$ ist?). 
+Entwerfen Sie einen Algorithmus, der das Optimierungsproblem in polynomieller Zeit $(\mathcal{O}(n^p), p \geq 1)$ löst 
+(Optimierungsproblem: Bestimmung der Tour mit der kürzesten Länge). Bestimmen Sie die asymptotische Laufzeit Ihres Algorithmus. 
+Die Instanzgröße ist hierbei die Anzahl der Knoten $\vert V \vert$ .Die Kantengewichte des Graphen sind positive 
+ganze Zahlen und hängen nicht von $\vert V \vert$ ab.\\
+Sei ein Graph von G=(v,e) und die Kantengewichte von G durch d:$\mapsto \mathbb{N} $ gegeben. Das maximale Kantengewicht eines knoten v ist das maximale Geicht aller Kanten die v als Endknoten haben.
+M ist die Menge aller maximalen Kantengewichte, daraus folgt, dass es sich bei $M_v$ um das maximale Kantengewichts eines Knoten v.\\
+Die Strecke einer Lösung 
+Max ist die Summe aller maximalen Kantengewichte. Jede Lösung der TSD Längen als Max gleich lang. Mit Hilfe einer binären Suche wird eiene Zahl l gesucht für die gilt: $\gamma(l)=1 und \gamma (l-1)=0$. Bei l handelt es sich um die Länge der längsten Lösung des TSP. Die binäre Suche ist abhängig von Max aber unabhängig von $\vert V \vert$. Durch die Entfernung aller Kanten e die die Bedinung $\gamma(l)=1$ in einem Graphen $G'=(V,E'), E'=E / \{e\}$ erfüllen, bleiben nur Kanten übrig, die zur Lösung des Optimierungsproblem gehören und alle kürzesten Strecke der Länge l gefunden.\\
+\textbf{Laufzeitanalyse: }$\vert V \vert$=n\\
+Ermitteln aller Kanten und maximaler Kantengewichte: $\mathcal{O}(\frac{n\cdot(n-1)}{2})=\mathcal{O}(n^2)$\\
+Ermitteln von Max: $\mathcal{O}(n)$\\
+Ermitteln von l (unabhängig von n): $\mathcal{O}(1)$\\
+Entfernen überflüssiger Kanten: $\mathcal{O}(n^2)$\\
+$\Longrightarrow$ Algoritmus läuft in $\mathcal{O}(n^2+n^2+n+1)=\mathcal{O}(n^2)$\\
+Die Laufzeit ist polynomiel mit $n^k$, mit k=2;\\
+\end{flushleft}
+\end{document}

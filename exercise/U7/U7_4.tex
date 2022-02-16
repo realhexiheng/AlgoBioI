@@ -1,0 +1,103 @@
+\documentclass{article}
+\usepackage[a4paper,left=15mm,right=15mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage{extarrows}
+\usepackage{enumerate}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 7}
+\author{Xiheng He }
+\date{Mai 2021}
+\linespread{2.0}
+\newtheorem{theorem}{Theorem}[section]
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{4. Aufgabe: NP-vollständigkeit von Erfüllbarkeits-Probleme (10 Punkte)}
+\newline
+In der Vorlesung wurde bewiesen, dass CNF-SAT (also boolsche Formeln in CNF (’conjunctive
+normal form’) und 3-SAT (CNF mit genau 3 Literalen pro Klausel) NP-vollständig sind.
+\begin{enumerate}[(a)]
+    \item Beweisen oder widerlegen Sie (natürlich mit genauer Begründung = Beweis!)
+    \begin{enumerate}[(a)]
+        \item BOOL-SAT (beliebige boolsche Formeln) ist NP-vollständig.
+        \newline
+        Aus Therorem 5.18 (Satz von Cook und Levin) auf Skript Seite 255: BOOL-SAT ist $\mathcal{N} \mathcal{P}-\emph{vollständig}$.
+        Beweis: Folien Seite 123-135
+        \item 6-SAT (boolsche Formeln in CNV mit genau 6 Literalen pro Klausel) ist NP-vollständig.
+        \newline
+        Zu zeigen ist, dass 6-SAT ist NP-vollständig.
+        \newline
+        Zunächst zeigen wir, dass 6-SAT $\in \mathcal{N} \mathcal{P}$. 
+        \begin{itemize}
+            \item Angenommen, dass 6-SAT $n$ boolsche Variablen besitzen, dann für jede Variable genau zwei boolsche 
+            Werte gibt damit beträgt die Laufzeit mindestens in $\Omega(2^n)$ um die 6-SAT Formel zu erfüllen. 
+            Deshalb gibt es keinen Algorithmus in polynomieller Laufzeit um das Problem zu lösen.
+            \item Einer Algorithmus zur Validierung der beliebigen Erfüllbarkeit für 6-SAT kann aber in polynomieller
+            Laufzeit durchführen da er nur alle Variable die entsprechende Werte zuweisen und die Erfüllbarkeit überprüfen muss.
+            D.h. Es gibt aber eine polynomiell zeitbeschränkte DTM $M$ und ein Polynom $q$, so dass $M$ in nach höchstens 
+            $p(|x|)$ Schritten die Eingabe verfizieren (akzeptieren oder ablehnen) kann.
+        \end{itemize}
+        Daraus folgt: 6-SAT $\in \mathcal{N} \mathcal{P}$
+        \newline
+        Anschließend zeigen wir: $\forall x \in \textbf{3-SAT} \Leftrightarrow f(x) \in \textbf{6-SAT}, T(f(x)) \in O(n^k)$
+        \newline
+        sei ein 3-SAT $:=(U,C)$ und ein 6-SAT $:= (U',C')$,
+        \newline
+        $C:= \{c_1,c_2,\dots c_n\}, C_i = \{x_i,y_i,z_i\}$
+        \newline
+        $C':=\cup_{i=1}^n C_i', U_i' = \{a_i,b_i,c_i\} \cup C_i$ \\
+        $C_i' = \{\{x_i,y_i,z_i,a_i,b_i,c_i\},\{x_i,y_i,z_i,\overline{a_i},b_i,c_i\},
+        \{x_i,y_i,z_i,a_i,\overline{b_i},c_i\},\{x_i,y_i,z_i,a_i,b_i,\overline{c_i}\},$ \\
+        $\{,\overline{a_i},\overline{b_i},c_i\},\{x_i,y_i,z_i,a_i,\overline{b_i},\overline{c_i}\},
+        \{x_i,y_i,z_i,\overline{a_i},b_i,\overline{c_i}\},
+        \{x_i,y_i,z_i,\overline{a_i},\overline{b_i},\overline{c_i}\}\}$ 
+        \newline \\
+        Zu zeigen ist, dass die Reduktion $f$ polynomielle Laufzeit besitzt.
+        \newline
+        $\forall C_i' \in C'$, eine Umformung von 3-SAT in 6-SAT kann in konstanter Zeit abgeschlossen werden, damit liegt 
+        die Laufzeit $T(f(x))$ offensichtlich in polynomieller Zeit ($T(f(x)) \in O(n)$ wobei $n$ die Eingabegröße der Variablen in 3-SAT).
+        \newline \\
+        Zu zeigen ist, dass $\forall x \in \textbf{3-SAT} \Leftrightarrow f(x) \in \textbf{6-SAT}$
+        \begin{itemize}
+            \item falls 3-SAT erfüllbar ist, dann jede Klausel $C_i$ als \emph{true} ausgewertet werden kann, d.h
+            $\forall x_i,y_i,z_i \in C_i, x_i\vee y_i\vee z_i$ ist wahr, daher ist jede entsprechende $C_i'$ auch wahr, 
+            da jede Klausel in 6-SAT durch drei zusätzliche Literale $a_i,b_i,c_i$ und ihre Komplemente umgeformt werden kann 
+            und somit macht keinen Unterschied. Deswegen kann 6-SAT erfüllt werden wenn 3-SAT erfüllbar ist.
+            \item falls 6-SAT erfüllbar ist, dann ist jede Klausel $C_i'$ wahr damit kann man herleiten, dass $C_i$ auch wahr ist.
+            D.h. 3-SAT kann erfüllt werden wenn 6-SAT erfüllt wurde.
+        \end{itemize}
+        Es gilt: \textbf{6-SAT} $\in \mathcal{N} \mathcal{P} \land \textbf{3-SAT} \leq_p \textbf{6-SAT} \Longrightarrow
+        $ 6-SAT ist NP-vollständig.
+        \item 2-SAT (boolsche Formeln in CNV mit genau 2 Literalen pro Klausel) ist NP-vollständig.
+        \newline
+        2-SAT ist nicht NP-vollständig (\textbf{Lemma 5.24} Skript.Seite 256: 2-SAT $\in \mathcal{P}$)
+        \newline
+        Zu zeigen ist, dass 2-SAT $\in \mathcal{P}$.
+        \newline
+        Zunächst zeigen wir, dass es einen Algorithmus in polynomieller Zeit für 2-SAT gibt.
+        \begin{enumerate}[(1)]
+            \item Für eine beliebige Variable $x_i$ in $i$-ter Klausel, setzen z.B $x_i := true$.
+            \item Dann entfernen alle Klausel, die $x_i$ enthält.
+            \item überprüfen welche Klausel $\overline{x_i}$ enthält, setzen die andere Variable $y_i := true$ 
+            in der Klausel z.B $\{\overline{x_i},y_i\}$ damit kann 2-SAT erfüllt werden. Falls Widerspruch entsteht,
+            setzen $x_i := false$. Nach der überprüfung alle Klausel können diese solche Klausel gestrichen werden.
+            \item Wiederholen (1), bis alle Variablen boolschen Wert zugeteilt worden haben, so dass 2-SAT erfüllt wurde.  
+        \end{enumerate}
+        Es ist leicht zu zeigen, dass für 2-SAT mit $n$ Variablen genau $n/2$ Klausel hat und für jede unbestimmte 
+        Variable müssen maximal $n/2$ Klausel überprüft werden.
+        Damit liegt die Laufzeit des obigen Algorithmus in $O(n^2)$ und 2-SAT kann in polynomieller Zeit gelöst werden.
+        \newline
+        Daraus folgt: 2-SAT ist nicht NP-vollständig.
+    \end{enumerate}
+    \newpage
+    \item Was ist der Unterschied zwischen der \emph{Äquivalenz} zweier Formeln und ihrer \emph{Erfüllbarkeitsäquivalenz}?
+    \newline
+    \emph{Erfüllbarkeitsäquivalenz} bedeutet, dass die zweier Formeln entweder erfüllt werden können oder nicht erfüllbar sind 
+    wobei die zweier Formeln nicht übereinstimmen dürfen.
+    \newline
+    \emph{Äquivalenz} unterscheidet sich von \emph{Erfüllbarkeitsäquivalenz}, da zwei äquivalente Formeln immer gleiche 
+    Modelle haben. 
+\end{enumerate}
+\end{flushleft}
+\end{document}

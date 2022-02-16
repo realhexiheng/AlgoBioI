@@ -1,0 +1,192 @@
+\documentclass{article}
+\usepackage[a4paper,left=15mm,right=15mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath, bm}
+\usepackage[lined,ruled]{algorithm2e}
+\usepackage{setspace}
+\usepackage{extarrows}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{german}
+\usepackage{underoverlap}
+\usepackage{xcolor}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 11}
+\author{Xiheng He}
+\date{Juli 2021}
+\linespread{1.5}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{4. Aufgabe: Algorithmenentwurf mit Keyword- und Suffix-Trees}
+\begin{enumerate}[(a)]
+    \item Word Statistics
+    \newline
+    Gegeben ist ein String $S$ und ein $n \in N$. Entwerfen Sie einen möglichst effizienten Algorithmus,
+    der alle Teilstrings von $S$ bestimmt, die in $S$ genau $n$ mal vorkommen $(O(|S| + k)$ ist
+    denkbar, mit $k$ ist Anzahl der Lösungs-Teilstrings). Korrektheitsbeweis und Laufzeitanalyse
+    nicht vergessen.
+    \newline
+    \begin{algorithm}
+        \NoCaptionOfAlgo
+        \setstretch{1.35}
+        \SetSideCommentLeft
+        \caption{Word Statistics (String S, int n)}
+        \Begin{
+            \SetAlgoVlined
+            char[] $t$; \par
+            \For{$(i = 0; i < |S|; i\textbf{\rm\scriptsize++})$}
+            {
+                $t[i] := S[i]$;
+            }
+            \tcp{Build Suffix-Tree first}
+            BuildSuffixTree($t, |S|$); \par
+            Set$\{\}$ $strs$; \par
+            \tcp{$v_i$: a internal node}
+            \tcp{$\{u_i\}$: all childnodes of $v_i$}
+            \ForEach{$(v_i : \{v | v \in T \land \{u_i\} \not = \varnothing\})$}
+            {   
+                \If{$(|u_i| = n)$}
+                {   
+                    \tcp{$strs$: all $n$ repeating substrings in $S$}
+                    $strs:= strs \cup v_i$; \par 
+                }    
+            }
+            \Return{$strs$};
+        }
+    \end{algorithm}
+    \newline
+    \textbf{Laufzeitanalyse: }
+    \begin{itemize}
+        \item Die Umwandlung in Char-Array braucht $O(|S|)$ Laufzeit.
+        \item Die Laufzeitkomplexität liegt in $O(|S|)$ um ein Suffix-Baum mit Hilfe des Ukkonens Algorithmus zu konstruktieren.
+        \item Foreach Schleife kann insgesamt maximal $O(|S|)$ durchlaufen weil nur innere Knoten besucht werden und die Anzahl der ineren Knoten
+        geringer als die Anzahl der Blätter $O(|S|)$ ist.
+    \end{itemize} 
+    Daraus folgt, dass die Laufzeit für Word Statistics Problem in $O(|S|)$ liegt.
+    \newpage
+    \textbf{Korrektheitanalyse: }
+    \newline
+    Die Grundidee ist: jede Teilfolge in $S$ ist ein Prefix der Suffix in $S$. 
+    \newline
+    Kommt eine Teilfolge $n$ mal in $S$ vor, muss sie als Prefix in genau $n$ Suffixen vorkommt.
+    D.h. diese Teilfoge kann in $n$ Suffixen gefunden werden und alle Suffixen haben gleiche Prefix nämlich die Teilfolge.
+    Damit gibt es sicherlich ein innerer Knoten, der die Teilfolge darstellt und genau $n(n \geq 2)$ Kinder besitzt. 
+    Besitzt ein innerer Knoten kein Kind, kann die dargestellte Teilfolge auch nicht $n$ mal in $S$ vorkommen. 
+    In dem obigen Algorithmus werden alle innere Knoten besucht, die Kinder besitzen. Am Ende werden entweder solche Teilfolgen
+    ausgegeben wenn innerer Knoten mit $n$ Kinder vorhanden ist oder eine leere Menge ausgegeben wenn solche Knoten nicht existiert
+    damit wird die Foreach Schleife enden und der Algorithmus terminieren.
+    \item Repeats
+    \newline
+    Ein $Repeat$ ist ein Substring $S$ eines Textes $T$ der mehrfach (mindestens zweimal) exakt gleich
+    in $T$ vorkommt. Ein Maximal Repeat ist ein Repeat, der weder links noch rechts erweitert werden
+    kann (also sowohl links wie rechts unterschiedliche Zeichen in $T$ vorkommen (links-divers,
+    rechts-divers)). Ein $Maximal Repeat Pair$ in $T$ ist ein Tripel $(p_1; p_2; n')$, das die Positionen $p_1$
+    und $p_2$ eines Maximal Repeats in $T$ und seine Länge $n'$ angibt.
+    \newline
+    \begin{enumerate}[(i)]
+        \item Wie kann man Maximal Repeats effizient finden? Laufzeit?
+        \newline
+        Maximal Repeats ist ein Repeats, der weder links noch rechts erweitert werden kann. Analog zum $n$ Repeats Teilstrings Problem in (a) können
+        wir jeden inneren Knoten finden dann überprüfen, ob der linksten Rand erweitert werden können. Wenn es nicht möglich ist dann stellt der aktuellen Knoten ein maximal Repeats dar.
+        Ein maximal Repeats in $S$ kann in Laufzeit $O(|S|)$ mit Hilfe des Ukkonens Algorithmus finden.
+        \item Wie viele Maximal Repeats kann es maximal (höchstens) in einem String $T$ der Länge $n$ geben?
+        \begin{theorem}
+            Es kann höchstens $n$ maximal Repeats in einem String $T$ der Länge $n$ geben.
+        \end{theorem}
+        Ein Sffuix-Tree kann maximal $n$ innere Knoten besitzen damit ergibt sich höchstens $n$ maximal Repeats für ein Suffix-Tree.
+        \item Sind alle Maximal Repeats von $T$ gleich lang?
+        \newline
+        Nein. Betrachte String $T$ = GABCEABCFABCF, dann haben offensichtlich maximal Repeat $ABC$ und $ABCF$ unterschiedliche Länge. 
+        \item Skizzieren Sie einen Algorithmus, der alle Maximal Repeats in $T$ findet. Analysieren Sie Korrektheit und Laufzeit.
+        \newline
+        \textbf{Laufzeitanalyse: }
+        \newline
+        Die Laufzeit liegt in $O(|T|)$, da alle Schleifen in Maximal Repeats können in $O(|T|)$ durchlaufen und links-divers
+        kann auch in linearer Laufzeit bestimmt werden.
+        \newline
+        \textbf{Korrektheitanalyse: }
+        \newline
+        Ein maximal Repeats muss laut Definition überprüft werden, ob entweder links oder rechts erweitert werden kann.
+        Rechte Seite muss aber nicht überprüft werden da das gleichen Zeichen in Suffix-Tree enthalten muss wenn sclche Zeichen existiert. 
+        Deshalb müssen wir zunächst zeigen, dass die linke Seite nicht erweitert werden kann. Durch Algorithm isLeftDiverse können wir
+        bestimmen, ob ein maximal Repeats immer unterschiedliche Zeichen an linker Seite hat. Wenn ein Knoten ein Kind besitzt, das links-divers ist,
+        dann ist dieser Knoten natürlich auch links-divers. Wenn es noch nicht festgestellt werden kann, können wir checken, ob alle Kinder gleiche Zeichen
+        an der linke Seite haben. Wenn nicht dann ist dieser Knoten ebenfalls links-divers. Dieser algorithm terminiert, da er nach überprüfung entweder 
+        $true$ oder $false$ zurückgeben muss. Somit terminiert der Maximal Repeats auch da er entweder zutreffende maximal Repeats oder 
+        eine leere Menge zurückgibt.
+        \begin{algorithm}
+            \NoCaptionOfAlgo
+            \setstretch{1.5}
+            \SetSideCommentLeft
+            \caption{Maximal Repeats (String T, int n)}
+            \Begin{
+                \SetAlgoVlined
+                \tcp{$n$: Länge des T}
+                char[] $t$; \par
+                \For{$(i = 0; i < n; i\textbf{\rm\scriptsize++})$}
+                {
+                    $t[i] := T[i]$;
+                }
+                \tcp{Build Suffix-Tree using Ukkonen's algorithm}
+                BuildSuffixTree(t, n); \par
+                \tcp{recorde all left chrarcters of every leaf}
+                Dict$\{\}$ $leftChars$; \par
+                \tcp{$v_i$: a internal node}
+                \tcp{$\{u_i\}$: all childnodes of $v_i$}
+                \ForEach{$(v_i : \{v | v \in T\} \land \{u_i\} = \varnothing)$}
+                {
+                    \tcp{add the left character of all suffixes}
+                    $leftChars := leftChars \cup (v_i, T[i - 1])$; 
+                }
+                \tcp{$maxRepeats$: all maximal Repeats in $T$}
+                Set$\{\}$ $maxRepeats$; \par
+                \ForEach{$(v_i : \{v | v \in T\} \land \{u_i\} \not = \varnothing)$}
+                {
+                    \tcp{check if current node is left-divers}
+                    \If{\rm{(isLeftDiverse}$(v_i, leftChars))$}
+                    {
+                        $maxRepeats := v_i \cup maxRepeats$;
+                    }
+                }
+                \Return{maxRepeats};
+            }
+        \end{algorithm}
+        \begin{algorithm}
+            \NoCaptionOfAlgo
+            \setstretch{1.5}
+            \SetSideCommentLeft
+            \caption{isLeftDiverse (String node, Dict\{\} leftChars)}
+            \Begin{
+                \SetAlgoVlined
+    
+                \ForEach{$(child : node.u_i)$}
+                {   
+                    \tcp{child is left-divers then node is also}
+                    \If{\rm{(isLeftDiverse}$(child, leftChars))$}
+                    {
+                        \Return{true};
+                    }
+                    \Else{
+                        \tcp{check if all left characters of children from current node}
+                        \If{$(leftChar[child] \not = leftChar[u_i(0)])$}
+                        {
+                            \Return{true};
+                        }
+                    }
+                }
+                \Return{false};
+            }
+        \end{algorithm}
+        \newpage
+        \item Wie viele Maximal Repeat \textbf{Pairs} kann es in $T$ geben? Wie kann man sie alle enumerieren? 
+        \newline
+        Da es höchstens $O(|T|)$ maximal Repeats in $T$ existieren, kann es höchstens $O(|T|)$ Pairs in $T$ geben.
+        Zum enumerieren können alle maximal Repeats bestimmen und $p_1$ sei die Postion des Knoten und $p_2$ sei die Postion des Kindes an der die Teilfolge endet.
+        Dann $n' := p_2 - p_1$.
+    \end{enumerate}
+    \emph{Hinweis}: Benutzen Sie kompakte Suffix-Trees.
+\end{enumerate}
+\end{flushleft}
+\end{document}

@@ -1,0 +1,40 @@
+\documentclass{article}
+\usepackage[lined,ruled]{algorithm2e}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{forest}
+\usepackage{amsmath}
+\usepackage{algorithm2e}
+\title{Übungen zur Algorithmischen Bioinformatik I
+Blatt 9}
+\author{Lisanne Friedrich }
+\date{Juni 2021}
+\SetKwFor{For}{for (}{)\text{ do}}{}
+\begin{document}
+\maketitle
+\textbf{1. Aufgabe (10 Punkte): Double Digest Problem}\\ \\
+
+ \begin{algorithm}
+    \NoCaptionOfAlgo
+    \caption{DoubleDigest())}
+    \Begin{
+    \SetAlgoVlined
+       generate random initial population;\\
+       repeat;\\
+       Natural Selection;\\
+       select parents from population;\\
+       order preserving weighted crossover on parents;\\
+       mutate individuals;\\
+       reserve Solution;
+       form next generation;\\
+       E-class={s};\\
+       \While{(unmarked string s1 in E-class)}{
+    E-class=E-Class $\cup$Permutation (s1)
+       }
+       \While{(marked string s2 in E-class)}{
+       E-class=E-Class $\cup$Cassette_Transformations(s2)}
+       }
+\end{algorithm}\\
+
+
+\end{document} 
+

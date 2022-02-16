@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage[a4paper,left=10mm,right=10mm,top=15mm,bottom=15mm]{geometry}
+\usepackage{amssymb,amsthm,latexsym,amsfonts, amsmath}
+\usepackage{german}
+\title{Übungen zur Algorithmischen Bioinformatik I\\
+Blatt 2}
+\author{Xiheng He }
+\date{April 2021}
+\linespread{2.0}
+\begin{document}
+\maketitle
+\begin{flushleft}
+\textbf{3. Aufgabe (10 Punkte):}\\
+Beweisen oder Wiederlegen Sie folgende Behauptungen. Achten Sie auf eine formal korrekte Durchführung.
+\newline\\
+(a) $O(f) \cdot O(g) = O(f \cdot g)$, hierbei ist $O(f) \cdot O(g) := \{\hat{f} \cdot \hat{g}: \hat{f} \in O(f) \land \hat{g} \in O(g)\}$
+mit $f,g,\hat{f},\hat{g}: \mathbb{N} \longrightarrow \mathbb{R_+}$und das Gleichheitzeichen bedeutet Mengengleichheit.
+\newline
+Aus Definition 1.25 sind:
+\newline
+$\exists c_1, c_2 \in \mathbb{R}, n_0 \in \mathbb{N}: \forall n \in \mathbb{N}. n \geq n_0: \hat{f} \leq c_1 \cdot f(n) = O(f)$ und $\hat{g} \leq c_2 \cdot g(n) = O(g)$
+\newline
+sei $a := c_1 \cdot c_2 \in \mathbb{R_+}$ 
+\newline
+$O(f) \cdot O(g) = \hat{f} \cdot \hat{g} = c_1 \cdot f(n) \cdot c_2 \cdot g(n) = a \cdot f(n)g(n) \overset{Regel.13}{=} O(f \cdot g)$
+\newline
+Daraus ist $O(f) \cdot O(g) \in O(f \cdot g)$.
+\newline\\
+(b)Für jedes Polynom $p$ vom Grad $k \geq 1$ gilt $\log (p(n)) \in \Theta \log(n)$;
+\newline
+sei $p(n) \geq 0$ ein Polynom vom Grad $k$, dann gilt $p \in (n^k)$
+\newline
+Nach Rechenregel 3 gilt: $p(n) \leq c_1 \cdot n^k $ (\romannumeral1) und $p(n) \geq c_2 \cdot n^k$ (\romannumeral2)
+\newline
+Daraus:
+\newline 
+$ \log(p(n)) \overset{\romannumeral1}{\leq} \log(c_1 \cdot n^k) = \log(c_1) + \log(n^k) = \log(c_1) + k\log(n)$
+\newline
+$ \log(p(n)) \overset{\romannumeral2}{\geq} \log(c_2 \cdot n^k) = \log(c_2) + \log(n^k) = \log(c_2) + k\log(n)$
+\newline
+Da beide $\log(c_1)$, $\log(c_2)$ und $k$ konstant sind, dann gilt $\log(c_1) \in O(1) \log(c_2) \in O(1)$ und daher $\log(p(n)) \in \Theta(\log(n))$.
+\newline\\
+(c)$f,g \in \Theta(h) \Rightarrow |f - g| \in \Theta(h)$, wobei $|f - g| : n \rightarrow |f(n) - g(n)|$;
+\newline 
+sei $ f = n\log n \in \Theta(n\log n), g = n\log n \in \Theta(n\log n), ist |f -g| : n \rightarrow |f(n) - g(n)| = 0 \in O(1) \not\Longrightarrow \Theta(n\log n)$ 
+\end{flushleft}
+\end{document}
