@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="StringSearching:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/StringSearching_jar</output-path>
-    <root id="archive" name="StringSearching.jar">
-      <element id="module-output" name="StringSearching" />
-      <element id="module-source" name="StringSearching" />
-    </root>
-  </artifact>
-</component>
