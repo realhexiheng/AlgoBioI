@@ -1,6 +1,8 @@
 # Algorithmic Bioinformatic I
 
-This repo contains my exercises, codes, algorithms for Algorithmic Bioinformatic I course Some discussed main topics:
+This repo contains my exercises, codes, algorithms for Algorithmic Bioinformatic I course 
+
+Some discussed main topics:
 
 1.MSS
 
